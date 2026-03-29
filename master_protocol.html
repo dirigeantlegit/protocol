@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Master Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0c;
+  --card: #141414;
+  --card2: #1a1a1a;
+  --border: #242424;
+  --text: #e8e4dc;
+  --muted: #555;
+  --muted2: #888;
+  --sleep: #4a9eff;
+  --face: #ff9f4a;
+  --sport: #4aff9f;
+  --height: #c44aff;
+  --food: #ffdf4a;
+  --always: #ff4a6e;
+  --check: #2d2d2d;
+  --checked-bg: #1c2a1c;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+html { font-size: 15px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+/* TOP BAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(12,12,12,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.topbar-date {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--muted2);
+}
+
+/* PROGRESS BAR */
+.progress-wrap {
+  padding: 12px 16px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted2);
+  margin-bottom: 7px;
+  font-family: 'Syne Mono', monospace;
+}
+
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sport), var(--sleep));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* NAV TABS */
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex-shrink: 0;
+  padding: 12px 18px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab.active { color: var(--text); border-bottom-color: var(--text); }
+.tab[data-tab="quotidien"] .dot { background: var(--sleep); }
+.tab[data-tab="semaine"] .dot { background: var(--sport); }
+.tab[data-tab="toujours"] .dot { background: var(--always); }
+.tab[data-tab="splits"] .dot { background: var(--height); }
+
+.tab-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+/* CONTENT */
+.page { display: none; padding: 0 0 20px; }
+.page.active { display: block; }
+
+/* SECTION */
+.section {
+  margin: 16px 16px 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.section-time {
+  margin-left: auto;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ITEMS */
+.items { display: flex; flex-direction: column; gap: 2px; }
+
+.item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.item:active { opacity: 0.7; }
+
+.item.done {
+  background: var(--checked-bg);
+  border-color: #2d4a2d;
+}
+
+.item.done .item-title { text-decoration: line-through; color: var(--muted2); }
+
+.checkbox {
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  margin-top: 1px;
+}
+
+.item.done .checkbox {
+  background: var(--sport);
+  border-color: var(--sport);
+}
+
+.check-icon {
+  display: none;
+  color: #000;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.item.done .check-icon { display: block; }
+
+.item-body { flex: 1; min-width: 0; }
+
+.item-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.item-desc {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+
+.item-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tag-sleep { background: rgba(74,158,255,0.15); color: var(--sleep); }
+.tag-face { background: rgba(255,159,74,0.15); color: var(--face); }
+.tag-sport { background: rgba(74,255,159,0.15); color: var(--sport); }
+.tag-height { background: rgba(196,74,255,0.15); color: var(--height); }
+.tag-food { background: rgba(255,223,74,0.15); color: var(--food); }
+.tag-always { background: rgba(255,74,110,0.15); color: var(--always); }
+
+/* NON-CHECKABLE INFO CARD */
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 13px 14px;
+  margin-bottom: 2px;
+}
+
+.info-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.info-card-body {
+  font-size: 11px;
+  color: var(--muted2);
+  line-height: 1.7;
+}
+
+.info-card-body strong { color: var(--text); font-weight: 700; }
+
+/* SPLIT CARDS */
+.split-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 2px;
+  overflow: hidden;
+}
+
+.split-header {
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.split-num {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  width: 28px;
+}
+
+.split-name {
+  font-size: 14px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.split-arrow {
+  font-size: 11px;
+  color: var(--muted);
+  transition: transform 0.25s;
+}
+
+.split-card.open .split-arrow { transform: rotate(180deg); }
+
+.split-body {
+  display: none;
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.split-card.open .split-body { display: block; }
+
+.ex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+}
+
+.ex-row:last-child { border-bottom: none; }
+
+.ex-name {
+  font-size: 13px;
+  flex: 1;
+}
+
+.ex-sets {
+  font-family: 'Syne Mono', monospace;
+  font-size: 12px;
+  color: var(--sport);
+  white-space: nowrap;
+}
+
+/* RESET BTN */
+.reset-btn {
+  display: block;
+  margin: 20px 16px 0;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  width: calc(100% - 32px);
+  transition: all 0.2s;
+}
+
+.reset-btn:active { background: var(--card); color: var(--text); }
+
+/* LEGEND */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--muted2);
+}
+
+.legend-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+/* HORIZONTAL RULE */
+.hr { height: 1px; background: var(--border); margin: 14px 0; }
+
+/* PRIORITY BADGE */
+.priority {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: var(--always);
+  color: #fff;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">Master Protocol</div>
+  <div class="topbar-date" id="dateDisplay"></div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Progression du jour</span>
+    <span id="progressText">0 / 0</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="quotidien" onclick="switchTab('quotidien')">
+    <span class="tab-dot" style="background:var(--sleep)"></span>Quotidien
+  </div>
+  <div class="tab" data-tab="semaine" onclick="switchTab('semaine')">
+    <span class="tab-dot" style="background:var(--sport)"></span>Semaine
+  </div>
+  <div class="tab" data-tab="toujours" onclick="switchTab('toujours')">
+    <span class="tab-dot" style="background:var(--always)"></span>Toujours
+  </div>
+  <div class="tab" data-tab="splits" onclick="switchTab('splits')">
+    <span class="tab-dot" style="background:var(--height)"></span>Splits
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE QUOTIDIEN
+══════════════════════════════════════════ -->
+<div class="page active" id="page-quotidien">
+
+  <!-- MATIN -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--sleep)"></div>
+      <div class="section-title">Matin</div>
+      <div class="section-time">~15 min</div>
+    </div>
+    <div class="items">
+
+      <div class="item" data-id="q1" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Petit-déjeuner <span class="priority">CRITIQUE</span></div>
+          <div class="item-desc">Prépare la veille. Yaourt grec + flocons d'avoine + fruits secs = ~30g protéines en 2 min. Ne jamais sauter.</div>
+        </div>
+        <span class="item-tag tag-food">Food</span>
+      </div>
+
+      <div class="item" data-id="q2" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Drainage lymphatique cervical</div>
+          <div class="item-desc">Pouces le long du SCM (oreille → clavicule), puis sous la mâchoire, puis sous les pommettes. Toujours dans cet ordre.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="q3" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Relâche masséter + fascia</div>
+          <div class="item-desc">Pouces sur masséter (angle mâchoire), mouvements circulaires. Puis milieu joue : enfoncer + ouvrir grand la bouche 8×.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="q4" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Stretch lingual</div>
+          <div class="item-desc">Tirer langue avec tissu, tourner gauche/droite 5× chaque côté. Puis vers le haut/bas, maintenir 3s. Libère fascia spiral.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="q5" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Thumb pulling — session matin</div>
+          <div class="item-desc">Dos au mur, menton rentré. Pouces sur bords du palais, pression vers haut + extérieur. 5–6 séries × 10s. 3 zones : arrière → milieu → avant.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MIDI -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--food)"></div>
+      <div class="section-title">Midi</div>
+      <div class="section-time">~3 min</div>
+    </div>
+    <div class="items">
+
+      <div class="item" data-id="q6" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Thumb pulling — session midi</div>
+          <div class="item-desc">Même protocole que le matin. La régularité (2× / jour) est ce qui fait la différence sur les sutures palatines.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="q7" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Repas : mastication bilatérale</div>
+          <div class="item-desc">20–30 masticatoires par bouchée, des deux côtés. Conscient ou automatique, peu importe — juste le faire.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SOIR -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--height)"></div>
+      <div class="section-title">Soir — Exercices ciblés</div>
+      <div class="section-time">~15 min</div>
+    </div>
+    <div class="items">
+
+      <div class="item" data-id="q8" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Hyoid swallow</div>
+          <div class="item-desc">Tête légèrement en arrière (20–30°). Avaler salive en hard mewing simultané. Sentir tension sous la mâchoire. 3 × 15 reps.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="q9" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Jaw opening résisté</div>
+          <div class="item-desc">Poing sous le menton. Ouvrir bouche lentement contre résistance (3s ouvrir, 3s fermer). 3 × 12 reps.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="q10" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Suspension décompression</div>
+          <div class="item-desc">Bar hang strict : jambes croisées, corps relâché, respiration contrôlée (pas de Valsalva). 3 × 30–45s. Suivi de 10 squat jumps pour recomprimer les disques.</div>
+        </div>
+        <span class="item-tag tag-height">Taille</span>
+      </div>
+
+      <div class="item" data-id="q11" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Chin tucks</div>
+          <div class="item-desc">Debout : rentrer menton en allongeant la nuque vers le haut. Maintenir 5s. 2 × 15. Corrige la posture de tête en avant.</div>
+        </div>
+        <span class="item-tag tag-height">Taille</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COUCHER -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--sleep)"></div>
+      <div class="section-title">Coucher</div>
+      <div class="section-time">23h max</div>
+    </div>
+    <div class="items">
+
+      <div class="item" data-id="q12" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Téléphone hors chambre <span class="priority">N°1</span></div>
+          <div class="item-desc">Mode avion + poser en dehors de la chambre. Pas de négociation. 70% de la GH sécrétée pendant le sommeil profond — c'est ta croissance.</div>
+        </div>
+        <span class="item-tag tag-sleep">Sommeil</span>
+      </div>
+
+      <div class="item" data-id="q13" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Couché avant 23h → 8h30 de sommeil</div>
+          <div class="item-desc">Pendant la puberté, 10h recommandées idéalement. 8h30 minimum. Sommeil = anabolisme, GH, croissance, récupération musculaire.</div>
+        </div>
+        <span class="item-tag tag-sleep">Sommeil</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EAU -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--food)"></div>
+      <div class="section-title">Hydratation</div>
+    </div>
+    <div class="items">
+      <div class="item" data-id="q14" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">2–2.5L d'eau dans la journée</div>
+          <div class="item-desc">1L le matin, 1L l'après-midi, reste le soir. Déshydratation = compression des disques intervertébraux = taille réduite mesurée.</div>
+        </div>
+        <span class="item-tag tag-food">Food</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetDay()">↺ Réinitialiser le jour</button>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sleep)"></div>Sommeil</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--face)"></div>Visage</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sport)"></div>Sport</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--height)"></div>Taille</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--food)"></div>Nutrition</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE SEMAINE
+══════════════════════════════════════════ -->
+<div class="page" id="page-semaine">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--sport)"></div>
+      <div class="section-title">Sport — Programme J1–J6</div>
+    </div>
+    <div class="items">
+
+      <div class="item" data-id="s1" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J1 — Push + Core</div>
+          <div class="item-desc">Pompes poings · Dips · Pike push-ups · Hollow body · Lever de jambes</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+      <div class="item" data-id="s2" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J2 — Pull + Biceps</div>
+          <div class="item-desc">Tractions pronation · Tractions supination · Australian pull-ups · Curl haltère · Face pulls bande</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+      <div class="item" data-id="s3" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J3 — Jambes + Core</div>
+          <div class="item-desc">Squat bulgare · Hip thrust · Nordic curl négatif · Mollets · Ab wheel</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+      <div class="item" data-id="s4" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J4 — Push Volume</div>
+          <div class="item-desc">Pompes diamant · Pompes larges · Dips lestés · Lateral raise · Triceps overhead</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+      <div class="item" data-id="s5" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J5 — Pull Volume + Neck</div>
+          <div class="item-desc">Tractions neutres · Australian larges · Rowing haltère · Chin tucks + neck curl · Shrugs</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+      <div class="item" data-id="s6" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J6 — Full Body Intensité</div>
+          <div class="item-desc">Tractions max · Dips max · Squat sauté · Pompes explosives · L-sit. Note tes benchmarks.</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+      <div class="item" data-id="s7" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">J7 — Repos actif</div>
+          <div class="item-desc">Marche 20–30 min. Étirements statiques. Mewing conscient. Chin tucks légers ×2×15.</div>
+        </div>
+        <span class="item-tag tag-sport">Sport</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--face)"></div>
+      <div class="section-title">Visage — 2–3× par semaine</div>
+    </div>
+    <div class="items">
+      <div class="item" data-id="s8" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Drainage complet (routine vidéo)</div>
+          <div class="item-desc">Cou → sous mâchoire → milieu joue → sous menton → pommettes → masséter → nez → oreilles/TMJ → retour cou. 10–12 min.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+
+      <div class="item" data-id="s9" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Chewing gum dur (Falim)</div>
+          <div class="item-desc">10–15 min max. Si asymétrie : côté faible en priorité. Hypertrophie masséter → carré de mâchoire.</div>
+        </div>
+        <span class="item-tag tag-face">Visage</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--height)"></div>
+      <div class="section-title">Taille — Décompression avancée (2–3×/sem)</div>
+    </div>
+    <div class="items">
+      <div class="item" data-id="s10" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Tractions excentriques lentes</div>
+          <div class="item-desc">Montée normale, descente 5–6s très lente en corps relâché. Pause 3s en bas (bras tendus). 3–5 reps. Améliore la rétention d'eau des disques.</div>
+        </div>
+        <span class="item-tag tag-height">Taille</span>
+      </div>
+
+      <div class="item" data-id="s11" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Étirements ischio-jambiers</div>
+          <div class="item-desc">Jambe tendue en avant, autre en arrière. 3 × 30s chaque côté. Relâche pression sur bas du dos.</div>
+        </div>
+        <span class="item-tag tag-height">Taille</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--food)"></div>
+      <div class="section-title">Nutrition — vérifications hebdo</div>
+    </div>
+    <div class="items">
+      <div class="item" data-id="s12" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Check protéines ≥ 140g / jour</div>
+          <div class="item-desc">~1.8g / kg. Œufs, poulet, fromage blanc, légumineuses. Sans ça, les séances ne servent à rien.</div>
+        </div>
+        <span class="item-tag tag-food">Food</span>
+      </div>
+      <div class="item" data-id="s13" onclick="toggle(this)">
+        <div class="checkbox"><span class="check-icon">✓</span></div>
+        <div class="item-body">
+          <div class="item-title">Calcium + Vitamine D3 + K2</div>
+          <div class="item-desc">Calcium : produits laitiers, sardines. D3 : soleil + poissons gras. K2 : beurre, jaunes d'œufs, fromages affinés. Trio essentiel pour les plaques de croissance.</div>
+        </div>
+        <span class="item-tag tag-food">Food</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE TOUJOURS
+══════════════════════════════════════════ -->
+<div class="page" id="page-toujours">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--always)"></div>
+      <div class="section-title">Habitudes permanentes — 24/7</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-title">🗣 Mewing complet</div>
+      <div class="info-card-body"><strong>Toute la langue</strong> contre le palais, y compris le tiers postérieur. Dents légèrement en contact. Lèvres fermées. Respiration nasale exclusive.<br><br>Pour trouver la position : avaler sa salive, puis maintenir. Mettre une alarme toutes les 2h pour vérifier.</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">💧 Déglutition correcte</div>
+      <div class="info-card-body">En avalant : langue monte vers le palais, <strong>pas vers les dents</strong>. Seuls les muscles du cou bougent. Visage neutre — aucune contraction des joues ou des lèvres.</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">📐 Posture cervicale</div>
+      <div class="info-card-body">Oreilles <strong>au-dessus des épaules</strong>, pas en avant. Check rapide : dos au mur, talons + fesses + épaules + tête touchent le mur. Ça c'est neutre.<br><br>Tête en avant = hyoïde descend + respiration buccale favorisée + perte de taille mesurable.</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">🥊 Mastication bilatérale</div>
+      <div class="info-card-body">À chaque repas. Les deux côtés. 20–30 masticatoires par bouchée. Prioriser aliments durs : viande, carottes crues, noix, pommes.</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">👃 Respiration nasale exclusive</div>
+      <div class="info-card-body">Toujours. Même à l'effort si possible. La respiration buccale chronique = palais étroit, mâchoire reculée, hyoïde bas, moins d'oxyde nitrique dans le sang.</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">😴 Hygiène sommeil</div>
+      <div class="info-card-body"><strong>Téléphone hors chambre à 23h max.</strong> Chambre froide et sombre. Horaires fixes (même le week-end). Le rythme circadien régule la GH — l'irrégularité casse la sécrétion nocturne.</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">🚫 Mythes à ignorer définitivement</div>
+      <div class="info-card-body">
+        <strong>Sprints extrêmes pour grandir</strong> → faux, pic de cortisol qui inhibe IGF-1<br>
+        <strong>Jeûne intermittent</strong> → faux, baisse de l'IGF-1 pendant la croissance<br>
+        <strong>Stéroïdes</strong> → ferment prématurément les plaques de croissance<br>
+        <strong>Suppléments miracles</strong> → aucun ne fonctionne sans les bases<br>
+        <strong>Bone smashing</strong> → zéro preuve, risque réel
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="info-card">
+      <div class="info-card-title">⏰ Rappel déload sport</div>
+      <div class="info-card-body">Toutes les <strong>6–8 semaines</strong> : une semaine à 50% du volume. Mêmes exercices, moitié des séries. C'est là que les tendons récupèrent et que tu reviens plus fort.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE SPLITS
+══════════════════════════════════════════ -->
+<div class="page" id="page-splits">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--height)"></div>
+      <div class="section-title">Détail des séances — Référence</div>
+    </div>
+
+    <div class="split-card open">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J1</span>
+        <span class="split-name">Push + Core</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Pompes sur poings (coudes 45°)</span><span class="ex-sets">4 × 8–12</span></div>
+        <div class="ex-row"><span class="ex-name">Dips (buste penché)</span><span class="ex-sets">4 × 6–10</span></div>
+        <div class="ex-row"><span class="ex-name">Pike push-ups (poings)</span><span class="ex-sets">3 × 8–12</span></div>
+        <div class="ex-row"><span class="ex-name">Hollow body hold</span><span class="ex-sets">4 × 20–40s</span></div>
+        <div class="ex-row"><span class="ex-name">Lever de jambes suspendu</span><span class="ex-sets">3 × 8–12</span></div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J2</span>
+        <span class="split-name">Pull + Biceps</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Tractions pronation (full ROM)</span><span class="ex-sets">4 × 5–8</span></div>
+        <div class="ex-row"><span class="ex-name">Tractions supination</span><span class="ex-sets">3 × 5–8</span></div>
+        <div class="ex-row"><span class="ex-name">Australian pull-ups</span><span class="ex-sets">3 × 10–15</span></div>
+        <div class="ex-row"><span class="ex-name">Curl haltère alterné (10kg)</span><span class="ex-sets">3 × 8–12</span></div>
+        <div class="ex-row"><span class="ex-name">Face pulls bande</span><span class="ex-sets">3 × 15–20</span></div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J3</span>
+        <span class="split-name">Jambes + Core</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Squat bulgare</span><span class="ex-sets">4 × 8–12</span></div>
+        <div class="ex-row"><span class="ex-name">Hip thrust (épaules sur canapé)</span><span class="ex-sets">4 × 12–15</span></div>
+        <div class="ex-row"><span class="ex-name">Nordic curl négatif (4–5s)</span><span class="ex-sets">3 × 4–6</span></div>
+        <div class="ex-row"><span class="ex-name">Mollets sur marche</span><span class="ex-sets">4 × 15–20</span></div>
+        <div class="ex-row"><span class="ex-name">Ab wheel / planche dynamique</span><span class="ex-sets">3 × 8–12</span></div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J4</span>
+        <span class="split-name">Push — Volume</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Pompes diamant (poings)</span><span class="ex-sets">4 × 8–12</span></div>
+        <div class="ex-row"><span class="ex-name">Pompes larges (poings)</span><span class="ex-sets">3 × 10–15</span></div>
+        <div class="ex-row"><span class="ex-name">Dips lestés (bande)</span><span class="ex-sets">4 × 6–8</span></div>
+        <div class="ex-row"><span class="ex-name">Lateral raise haltères (5kg)</span><span class="ex-sets">3 × 12–15</span></div>
+        <div class="ex-row"><span class="ex-name">Triceps overhead haltère (10kg)</span><span class="ex-sets">3 × 10–12</span></div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J5</span>
+        <span class="split-name">Pull + Neck</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Tractions neutres</span><span class="ex-sets">4 × 6–10</span></div>
+        <div class="ex-row"><span class="ex-name">Australian pull-ups larges</span><span class="ex-sets">4 × 10–15</span></div>
+        <div class="ex-row"><span class="ex-name">Rowing haltère unilatéral (10kg)</span><span class="ex-sets">3 × 10–12</span></div>
+        <div class="ex-row"><span class="ex-name">Chin tucks + neck curl allongé</span><span class="ex-sets">3 × 15–20</span></div>
+        <div class="ex-row"><span class="ex-name">Shrugs haltères (10kg)</span><span class="ex-sets">3 × 12–15</span></div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J6</span>
+        <span class="split-name">Full Body — Intensité</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Tractions pronation MAX ← note le chiffre</span><span class="ex-sets">3 × max</span></div>
+        <div class="ex-row"><span class="ex-name">Dips MAX ← note le chiffre</span><span class="ex-sets">3 × max</span></div>
+        <div class="ex-row"><span class="ex-name">Squat sauté (descente 3s)</span><span class="ex-sets">4 × 10</span></div>
+        <div class="ex-row"><span class="ex-name">Pompes explosives (poings)</span><span class="ex-sets">3 × 6–8</span></div>
+        <div class="ex-row"><span class="ex-name">L-sit suspendu</span><span class="ex-sets">4 × max hold</span></div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-header" onclick="toggleSplit(this)">
+        <span class="split-num">J7</span>
+        <span class="split-name">Repos actif</span>
+        <span class="split-arrow">▼</span>
+      </div>
+      <div class="split-body">
+        <div class="ex-row"><span class="ex-name">Marche 20–30 min</span><span class="ex-sets">—</span></div>
+        <div class="ex-row"><span class="ex-name">Étirements statiques (pecs, dorsaux, ischio)</span><span class="ex-sets">30–60s chaque</span></div>
+        <div class="ex-row"><span class="ex-name">Mewing conscient</span><span class="ex-sets">10 min</span></div>
+        <div class="ex-row"><span class="ex-name">Chin tucks légers</span><span class="ex-sets">2 × 15</span></div>
+        <div class="ex-row"><span class="ex-name">Hydratation cible</span><span class="ex-sets">2.5L</span></div>
+      </div>
+    </div>
+
+    <!-- Règle double progression -->
+    <div class="section-header" style="margin-top:20px">
+      <div class="section-dot" style="background:var(--sport)"></div>
+      <div class="section-title">Règle de progression</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-body">
+        Atteins le <strong>haut de la fourchette</strong> sur toutes les séries → semaine suivante tu montes les reps ou tu passes à la variante plus dure.<br><br>
+        Si tu stagues 2 semaines → vérifie <strong>sommeil d'abord</strong>, puis protéines. Pas le programme.<br><br>
+        Toutes les <strong>6–8 semaines</strong> : déload (50% du volume, même poids).
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// DATE
+const days = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+const now = new Date();
+document.getElementById('dateDisplay').textContent =
+  days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
+
+// TABS
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+}
+
+// TOGGLE ITEM
+function toggle(el) {
+  el.classList.toggle('done');
+  saveState();
+  updateProgress();
+}
+
+// TOGGLE SPLIT
+function toggleSplit(header) {
+  header.closest('.split-card').classList.toggle('open');
+}
+
+// SAVE / LOAD
+function saveState() {
+  const done = [];
+  document.querySelectorAll('.item.done').forEach(i => done.push(i.dataset.id));
+  localStorage.setItem('protocol_state', JSON.stringify(done));
+  localStorage.setItem('protocol_date', new Date().toDateString());
+}
+
+function loadState() {
+  const savedDate = localStorage.getItem('protocol_date');
+  if (savedDate !== new Date().toDateString()) {
+    localStorage.removeItem('protocol_state');
+    return;
+  }
+  const done = JSON.parse(localStorage.getItem('protocol_state') || '[]');
+  done.forEach(id => {
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (el) el.classList.add('done');
+  });
+}
+
+function resetDay() {
+  document.querySelectorAll('.item.done').forEach(i => i.classList.remove('done'));
+  localStorage.removeItem('protocol_state');
+  updateProgress();
+}
+
+// PROGRESS
+function updateProgress() {
+  const all = document.querySelectorAll('#page-quotidien .item').length;
+  const done = document.querySelectorAll('#page-quotidien .item.done').length;
+  document.getElementById('progressText').textContent = done + ' / ' + all;
+  document.getElementById('progressFill').style.width = (done / all * 100) + '%';
+}
+
+loadState();
+updateProgress();
+</script>
+</body>
+</html>
