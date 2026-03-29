@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0c0c0c">
+<title>Master Protocol</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0c0c0c;--card:#161616;--border:#1e1e1e;--border2:#242424;
+  --text:#e8e4dc;--muted:#555;--muted2:#888;
+  --sleep:#4a9eff;--face:#ff9f4a;--sport:#4aff9f;
+  --height:#c44aff;--food:#ffdf4a;--always:#ff4a6e;
+}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;min-height:100vh;overscroll-behavior:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* TOP BAR */
+#topbar{position:sticky;top:0;z-index:100;background:rgba(12,12,12,0.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 14px 0}
+#topbar-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+#topbar-title{font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+#topbar-date{font-size:11px;color:var(--muted2);font-family:monospace}
+#tabs{display:flex;overflow-x:auto;gap:1px;scrollbar-width:none;padding-bottom:0}
+#tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;min-width:46px;padding:8px 10px 10px;border-bottom:2px solid transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:border-color 0.15s}
+.tab.active{border-bottom-color:var(--text)}
+.tab-name{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;transition:color 0.15s}
+.tab.active .tab-name,.tab.today .tab-name{color:var(--text)}
+.tab-mini-bar{width:26px;height:3px;border-radius:2px;background:#1e1e1e;overflow:hidden}
+.tab-mini-fill{height:100%;border-radius:2px;background:var(--sleep);transition:width 0.3s}
+.tab-sport{font-size:9px;color:#444;font-family:monospace}
+
+/* PAGE */
+.page{display:none;padding:8px 14px 80px}
+.page.active{display:block}
+
+/* DAY HEADER */
+.day-header{padding:8px 0 14px;display:flex;justify-content:space-between;align-items:flex-start}
+.day-title{font-size:22px;font-weight:900;letter-spacing:-0.5px}
+.day-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.badge-today{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 7px;border-radius:3px;background:rgba(74,255,159,0.12);color:var(--sport);border:1px solid rgba(74,255,159,0.2)}
+
+/* PROGRESS */
+.prog-box{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:11px 13px;margin-bottom:18px}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:7px}
+.prog-label{font-size:11px;color:var(--muted);font-family:monospace}
+.prog-num{font-size:11px;color:var(--muted2);font-family:monospace}
+.prog-bar{height:3px;background:#1a1a1a;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--sport),var(--sleep));transition:width 0.4s}
+.prog-done{text-align:center;color:var(--sport);font-size:12px;font-weight:700;margin-top:8px;letter-spacing:2px}
+
+/* SECTION */
+.sec{margin-bottom:20px}
+.sec-header{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:10px}
+.sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sec-title{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.sec-time{margin-left:auto;font-size:10px;color:#444;font-family:monospace}
+.items{display:flex;flex-direction:column;gap:4px}
+
+/* ITEM */
+.item{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:background 0.15s,border-color 0.15s;user-select:none}
+.item.done{background:#1a2a1a;border-color:#2d4a2d}
+.item.done .item-title{text-decoration:line-through;color:var(--muted)}
+.item.done .item-desc{display:none}
+.chk{width:20px;height:20px;border-radius:4px;flex-shrink:0;margin-top:1px;background:transparent;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.item.done .chk{background:var(--sport);border-color:var(--sport)}
+.chk-icon{display:none;color:#000;font-size:11px;font-weight:900;line-height:1}
+.item.done .chk-icon{display:block}
+.item-body{flex:1;min-width:0}
+.item-title{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.item-desc{font-size:11px;color:#666;line-height:1.5}
+.tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:3px;flex-shrink:0;margin-top:1px}
+
+/* SPORT CARD */
+.sport-card{background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;margin-bottom:4px}
+.sport-card.all-done{background:#1a2a1a;border-color:#2d4a2d}
+.sport-header{padding:13px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.sport-arrow{font-size:11px;color:#444;transition:transform 0.2s;margin-left:4px}
+.sport-card.open .sport-arrow{transform:rotate(180deg)}
+.sport-body{display:none;border-top:1px solid var(--border);padding:0 12px 12px}
+.sport-card.open .sport-body{display:block}
+.ex-row{padding:11px 0;border-bottom:1px solid #1a1a1a;display:flex;align-items:flex-start;gap:10px;cursor:pointer;user-select:none}
+.ex-row:last-child{border-bottom:none}
+.ex-chk{width:16px;height:16px;border-radius:3px;flex-shrink:0;margin-top:2px;background:transparent;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.ex-row.done .ex-chk{background:var(--sport);border-color:var(--sport)}
+.ex-chk-icon{display:none;color:#000;font-size:9px;font-weight:900}
+.ex-row.done .ex-chk-icon{display:block}
+.ex-row.done .ex-name{text-decoration:line-through;color:var(--muted)}
+.ex-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.ex-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ex-sets{font-size:11px;color:var(--sport);font-family:monospace}
+.ex-rest{font-size:11px;color:#444}
+.ex-prog{font-size:10px;color:#555;font-style:italic}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div id="topbar-row">
+    <div id="topbar-title">Master Protocol</div>
+    <div id="topbar-date"></div>
+  </div>
+  <div id="tabs"></div>
+</div>
+
+<div id="pages"></div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────
+
+const CATS = {
+  sleep:  {bg:"rgba(74,158,255,0.12)", text:"#4a9eff", border:"rgba(74,158,255,0.25)", label:"Sommeil"},
+  face:   {bg:"rgba(255,159,74,0.12)", text:"#ff9f4a", border:"rgba(255,159,74,0.25)",  label:"Visage"},
+  sport:  {bg:"rgba(74,255,159,0.12)", text:"#4aff9f", border:"rgba(74,255,159,0.25)", label:"Sport"},
+  height: {bg:"rgba(196,74,255,0.12)", text:"#c44aff", border:"rgba(196,74,255,0.25)", label:"Taille"},
+  food:   {bg:"rgba(255,223,74,0.12)", text:"#ffdf4a", border:"rgba(255,223,74,0.25)", label:"Nutrition"},
+  always: {bg:"rgba(255,74,110,0.12)", text:"#ff4a6e", border:"rgba(255,74,110,0.25)", label:"Toujours"},
+};
+
+const MATIN = [
+  {id:"m1",cat:"face",  title:"Drainage cervical",       desc:"Pouces le long du SCM (oreille → clavicule) × 10 passages. Puis sous la mâchoire vers les oreilles × 8. Puis sous les pommettes × 8. Toujours dans cet ordre — ouvre la sortie avant d'envoyer le fluide."},
+  {id:"m2",cat:"face",  title:"Relâche masséter",         desc:"Pouces sur l'angle de la mâchoire, mouvements circulaires remontants 30s. Puis milieu joue : enfoncer + ouvrir grand la bouche 8×."},
+  {id:"m3",cat:"face",  title:"Stretch lingual",          desc:"Tirer langue avec tissu, tourner gauche/droite 5× chaque côté. Puis vers le haut et vers le bas, maintenir 3s. Libère le fascia spiral — langue tendue = mewing impossible."},
+  {id:"m4",cat:"face",  title:"Thumb pulling — matin",    desc:"Dos au mur, menton rentré. Pouces sur bords extérieurs du palais, pression vers haut + extérieur simultanément. 5–6 séries × 10s. 3 zones : arrière → milieu → avant."},
+];
+
+const SOIR = [
+  {id:"s1",cat:"face",  title:"Hyoid swallow",            desc:"Tête légèrement en arrière (20–30°). Avaler salive en hard mewing simultané. Sentir tension sous la mâchoire. 3 × 15 reps. Brûlure sous le menton = normal."},
+  {id:"s2",cat:"face",  title:"Jaw opening résisté",      desc:"Poing sous le menton. Ouvrir bouche lentement contre résistance (3s ouvrir, 3s fermer). 3 × 12 reps. Réduit aussi le serrement nocturne."},
+  {id:"s3",cat:"face",  title:"Thumb pulling — soir",     desc:"Même protocole que le matin. 2× par jour = facteur clé pour les sutures palatines à 15 ans."},
+  {id:"s4",cat:"height",title:"Bar hang décompression",   desc:"Suspension complète, jambes croisées, corps relâché. Respiration contrôlée — pas de Valsalva. 3 × 30–45s. Suivi immédiatement de 10 squat jumps pour recomprimer les disques."},
+  {id:"s5",cat:"height",title:"Chin tucks",               desc:"Debout : rentrer le menton en allongeant la nuque vers le haut (pas baisser la tête). Maintenir 5s. 2 × 15 reps. Tête en avant = hyoïde descend mécaniquement."},
+];
+
+const COMMON = [
+  {id:"c1",cat:"sleep", title:"Téléphone hors chambre à 23h ★",desc:"Mode avion, posé hors de la chambre. 70% de la GH sécrétée pendant le sommeil profond. Pas de négociation."},
+  {id:"c2",cat:"sleep", title:"Couché avant 23h → 8h30 min",   desc:"Objectif pubertaire : 8h30 minimum. Rythme fixe même le week-end. Rythme circadien régulier = GH optimisée."},
+  {id:"c3",cat:"food",  title:"Petit-déjeuner ★",               desc:"Préparer la veille. Yaourt grec + flocons + fruits secs ≈ 30g protéines en 2 min. Ne jamais sauter : 16h de jeûne = catabolisme matinal."},
+  {id:"c4",cat:"food",  title:"2–2.5L d'eau",                   desc:"1L matin, 1L après-midi, reste le soir. Déshydratation = disques intervertébraux comprimés = taille réduite."},
+  {id:"c5",cat:"face",  title:"Mewing toute la journée",        desc:"Langue entière contre le palais (tiers postérieur inclus). Avaler sa salive pour trouver la position, puis maintenir. Alarme toutes les 2h."},
+  {id:"c6",cat:"face",  title:"Respiration nasale exclusive",   desc:"Toujours. Bouche fermée au repos. Respiration buccale chronique = palais étroit, mâchoire reculée, hyoïde bas."},
+  {id:"c7",cat:"face",  title:"Déglutition correcte",           desc:"Langue vers le palais (pas vers les dents). Seuls les muscles du cou bougent. Visage neutre en avalant."},
+  {id:"c8",cat:"face",  title:"Mastication bilatérale",         desc:"Les deux côtés, 20–30 masticatoires par bouchée. Aliments durs si possible : viande, carottes, noix."},
+];
+
+const HEBDO = [
+  {id:"h1",cat:"face",  title:"Massage drainage complet",       desc:"Ordre obligatoire : cou → sous mâchoire → milieu joue (ouvrir bouche) → sous menton → pommettes → masséter → bords nez → oreilles/TMJ → retour cou. 10–12 min."},
+  {id:"h2",cat:"face",  title:"Chewing gum dur (Falim)",        desc:"10–15 min max. Côté faible en priorité si asymétrie. Hypertrophie masséter → carré de mâchoire."},
+  {id:"h3",cat:"height",title:"Tractions excentriques lentes",  desc:"Descente 5–6s très lente, pause 3s bras tendus. 3–5 reps. Améliore la rétention d'eau des disques intervertébraux."},
+];
+
+const SPORT = {
+  J1:{label:"Push + Core",      exs:[
+    {n:"Pompes sur poings (coudes 45°)",       s:"4 × 8–12",  r:"90s",   p:"→ 4×12 : pompes archer"},
+    {n:"Dips (buste penché en avant)",         s:"4 × 6–10",  r:"2 min", p:"→ 4×10 : lester avec bande"},
+    {n:"Pike push-ups (poings)",               s:"3 × 8–12",  r:"90s",   p:"→ 3×12 : pieds surélevés"},
+    {n:"Hollow body hold",                     s:"4 × 20–40s",r:"60s",   p:"→ 4×40s : hollow rocks"},
+    {n:"Lever de jambes suspendu",             s:"3 × 8–12",  r:"90s",   p:"Genoux → jambes tendues"},
+  ]},
+  J2:{label:"Pull + Biceps",    exs:[
+    {n:"Tractions pronation (full ROM)",       s:"4 × 5–8",   r:"2 min", p:"→ 4×8 : lest progressif"},
+    {n:"Tractions supination",                 s:"3 × 5–8",   r:"2 min", p:"Même logique"},
+    {n:"Australian pull-ups",                  s:"3 × 10–15", r:"90s",   p:"→ pieds surélevés"},
+    {n:"Curl haltère alterné (10kg)",          s:"3 × 8–12",  r:"90s",   p:"→ 3×12 : tempo 4s"},
+    {n:"Face pulls bande",                     s:"3 × 15–20", r:"60s",   p:"Bande plus résistante"},
+  ]},
+  J3:{label:"Jambes + Core",    exs:[
+    {n:"Squat bulgare",                        s:"4 × 8–12",  r:"2 min", p:"Corps → 5kg → 10kg"},
+    {n:"Hip thrust (épaules sur canapé)",      s:"4 × 12–15", r:"90s",   p:"Lest progressif"},
+    {n:"Nordic curl négatif (4–5s)",           s:"3 × 4–6",   r:"2 min", p:"→ remontée complète"},
+    {n:"Mollets sur marche",                   s:"4 × 15–20", r:"60s",   p:"Bilatéral → unilatéral"},
+    {n:"Ab wheel / planche dynamique",         s:"3 × 8–12",  r:"90s",   p:"Genoux → debout"},
+  ]},
+  J4:{label:"Push — Volume",    exs:[
+    {n:"Pompes diamant (poings)",              s:"4 × 8–12",  r:"90s",   p:"→ pieds surélevés"},
+    {n:"Pompes larges (poings)",               s:"3 × 10–15", r:"90s",   p:"Volume pur"},
+    {n:"Dips lestés (bande)",                  s:"4 × 6–8",   r:"2 min", p:"Lest progressif"},
+    {n:"Lateral raise haltères (5kg)",         s:"3 × 12–15", r:"60s",   p:"5kg → 10kg"},
+    {n:"Triceps overhead haltère (10kg)",      s:"3 × 10–12", r:"90s",   p:"→ 3×12 puis charge"},
+  ]},
+  J5:{label:"Pull + Neck",      exs:[
+    {n:"Tractions neutres",                    s:"4 × 6–10",  r:"2 min", p:"Lest progressif"},
+    {n:"Australian pull-ups larges",           s:"4 × 10–15", r:"90s",   p:"→ pieds plus hauts"},
+    {n:"Rowing haltère unilatéral (10kg)",     s:"3 × 10–12", r:"90s",   p:"Technique d'abord"},
+    {n:"Chin tucks + neck curl allongé",       s:"3 × 15–20", r:"60s",   p:"→ résistance main"},
+    {n:"Shrugs haltères (10kg)",               s:"3 × 12–15", r:"60s",   p:"Lest progressif"},
+  ]},
+  J6:{label:"Full Body — Intensité", exs:[
+    {n:"Tractions pronation MAX ← note le chiffre", s:"3 × max", r:"3 min", p:"Benchmark hebdo"},
+    {n:"Dips MAX ← note le chiffre",           s:"3 × max",   r:"3 min", p:"Benchmark hebdo"},
+    {n:"Squat sauté (descente 3s)",            s:"4 × 10",    r:"90s",   p:"→ lest haltères"},
+    {n:"Pompes explosives (poings)",           s:"3 × 6–8",   r:"2 min", p:"→ applaudissement"},
+    {n:"L-sit suspendu",                       s:"4 × max",   r:"90s",   p:"Genoux → tendus"},
+  ]},
+  J7:{label:"Repos actif",      exs:[
+    {n:"Marche 20–30 min",                     s:"—",         r:"—",     p:"Récupération active"},
+    {n:"Étirements statiques (pecs, dorsaux, ischio)", s:"30–60s chaque", r:"—", p:""},
+    {n:"Mewing conscient renforcé",            s:"10 min",    r:"—",     p:""},
+    {n:"Chin tucks légers",                    s:"2 × 15",    r:"—",     p:""},
+  ]},
+};
+
+const DAYS_FR    = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+const DAYS_SHORT = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+const SPORT_KEYS = ["J1","J2","J3","J4","J5","J6","J7"];
+const HEBDO_DAYS = [2,4,6]; // J3, J5, J7 (index 2,4,6)
+const JS2IDX     = {1:0,2:1,3:2,4:3,5:4,6:5,0:6};
+
+function todayIdx(){ return JS2IDX[new Date().getDay()]; }
+
+// ─── STATE ────────────────────────────────────────────────────────────────
+// key: "YYYY-MM-DD_itemId" → true/false
+function dateStr(offset=0){
+  const d=new Date(); d.setDate(d.getDate()+offset);
+  return d.toISOString().slice(0,10);
+}
+function dayDateStr(dayIdx){
+  const t=todayIdx(); const diff=dayIdx-t;
+  return dateStr(diff);
+}
+function itemKey(dayIdx,id){ return dayDateStr(dayIdx)+"_"+id; }
+
+let STATE = {};
+try{ STATE=JSON.parse(localStorage.getItem("mp_state")||"{}"); }catch{}
+function save(){ try{localStorage.setItem("mp_state",JSON.stringify(STATE));}catch{} }
+
+function isChecked(dayIdx,id){ return !!STATE[itemKey(dayIdx,id)]; }
+function toggle(dayIdx,id){
+  const k=itemKey(dayIdx,id);
+  STATE[k]=!STATE[k];
+  save();
+  renderDay(dayIdx);
+  renderTabBar();
+}
+
+// ─── RENDER HELPERS ───────────────────────────────────────────────────────
+function tag(cat){
+  const c=CATS[cat];
+  return `<span class="tag" style="background:${c.bg};color:${c.text};border:1px solid ${c.border}">${c.label}</span>`;
+}
+
+function itemHTML(it,dayIdx){
+  const done=isChecked(dayIdx,it.id);
+  return `<div class="item${done?" done":""}" onclick="toggle(${dayIdx},'${it.id}')">
+    <div class="chk"><span class="chk-icon">✓</span></div>
+    <div class="item-body">
+      <div class="item-title">${it.title}</div>
+      <div class="item-desc">${it.desc}</div>
+    </div>
+    ${tag(it.cat)}
+  </div>`;
+}
+
+function sportHTML(dayIdx){
+  const sk=SPORT_KEYS[dayIdx];
+  const sp=SPORT[sk];
+  const allDone=sp.exs.every((_,i)=>isChecked(dayIdx,`ex_${sk}_${i}`));
+  const openClass=`sport_open_${dayIdx}`;
+  const isOpen=window[openClass]||false;
+  let exRows=sp.exs.map((ex,i)=>{
+    const done=isChecked(dayIdx,`ex_${sk}_${i}`);
+    return `<div class="ex-row${done?" done":""}" onclick="toggleEx(${dayIdx},'${sk}',${i})">
+      <div class="ex-chk"><span class="ex-chk-icon">✓</span></div>
+      <div>
+        <div class="ex-name">${ex.n}</div>
+        <div class="ex-meta">
+          <span class="ex-sets">${ex.s}</span>
+          ${ex.r!=="—"?`<span class="ex-rest">repos ${ex.r}</span>`:""}
+          ${ex.p?`<span class="ex-prog">${ex.p}</span>`:""}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  return `<div class="sport-card${allDone?" all-done":""}${isOpen?" open":""}" id="sport_card_${dayIdx}">
+    <div class="sport-header" onclick="toggleSport(${dayIdx})">
+      <div class="chk" style="${allDone?"background:var(--sport);border-color:var(--sport)":""}">
+        ${allDone?'<span class="chk-icon" style="display:block">✓</span>':""}
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:${allDone?"var(--muted)":"var(--text)"}">Séance — ${sp.label}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px">${sp.exs.length} exercices · appuie pour voir</div>
+      </div>
+      ${tag("sport")}
+      <span class="sport-arrow">▼</span>
+    </div>
+    <div class="sport-body">${exRows}</div>
+  </div>`;
+}
+
+function dayProgress(dayIdx){
+  const sk=SPORT_KEYS[dayIdx];
+  const items=[...MATIN,...SOIR,...COMMON];
+  if(HEBDO_DAYS.includes(dayIdx)) items.push(...HEBDO);
+  const exIds=SPORT[sk].exs.map((_,i)=>`ex_${sk}_${i}`);
+  const total=items.length+exIds.length;
+  const done=items.filter(t=>isChecked(dayIdx,t.id)).length+exIds.filter(id=>isChecked(dayIdx,id)).length;
+  return{done,total,pct:total>0?Math.round(done/total*100):0};
+}
+
+function section(title,time,dotColor,content){
+  return `<div class="sec">
+    <div class="sec-header">
+      <div class="sec-dot" style="background:${dotColor}"></div>
+      <span class="sec-title">${title}</span>
+      ${time?`<span class="sec-time">${time}</span>`:""}
+    </div>
+    <div class="items">${content}</div>
+  </div>`;
+}
+
+function renderDay(dayIdx){
+  const el=document.getElementById(`page_${dayIdx}`);
+  if(!el)return;
+  const sk=SPORT_KEYS[dayIdx];
+  const {done,total,pct}=dayProgress(dayIdx);
+  const isToday=dayIdx===todayIdx();
+
+  el.innerHTML=`
+    <div class="day-header">
+      <div>
+        <div class="day-title">${DAYS_FR[dayIdx]}</div>
+        <div class="day-sub">${sk} — ${SPORT[sk].label}</div>
+      </div>
+      ${isToday?'<span class="badge-today">Aujourd\'hui</span>':""}
+    </div>
+
+    <div class="prog-box">
+      <div class="prog-row">
+        <span class="prog-label">Progression</span>
+        <span class="prog-num">${done} / ${total}</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      ${pct===100?'<div class="prog-done">JOURNÉE COMPLÈTE ✓</div>':""}
+    </div>
+
+    ${section("Matin","~15 min","#ff9f4a", MATIN.map(t=>itemHTML(t,dayIdx)).join(""))}
+    ${section("Sport", sk==="J7"?"~20 min":"~35–45 min","#4aff9f", sportHTML(dayIdx))}
+    ${section("Soir","~15 min","#c44aff", SOIR.map(t=>itemHTML(t,dayIdx)).join(""))}
+    ${HEBDO_DAYS.includes(dayIdx)?section("Hebdomadaire (ce jour)","~12 min","#ff9f4a", HEBDO.map(t=>itemHTML(t,dayIdx)).join("")):""}
+    ${section("Toujours — toute la journée","","#ff4a6e", COMMON.map(t=>itemHTML(t,dayIdx)).join(""))}
+  `;
+}
+
+function toggleEx(dayIdx,sk,i){
+  toggle(dayIdx,`ex_${sk}_${i}`);
+}
+
+function toggleSport(dayIdx){
+  const key=`sport_open_${dayIdx}`;
+  window[key]=!window[key];
+  renderDay(dayIdx);
+}
+
+// ─── TAB BAR ──────────────────────────────────────────────────────────────
+let activeDay=todayIdx();
+
+function renderTabBar(){
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML=DAYS_SHORT.map((name,i)=>{
+    const {pct}=dayProgress(i);
+    const isToday=i===todayIdx();
+    return `<div class="tab${i===activeDay?" active":""}${isToday?" today":""}" onclick="switchDay(${i})">
+      <span class="tab-name">${name}${isToday?'<span style="color:#4aff9f;margin-left:2px">·</span>':""}</span>
+      <div class="tab-mini-bar"><div class="tab-mini-fill" style="width:${pct}%;background:${pct===100?"#4aff9f":"#4a9eff"}"></div></div>
+      <span class="tab-sport">${SPORT_KEYS[i]}</span>
+    </div>`;
+  }).join("");
+}
+
+function switchDay(i){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(`page_${i}`).classList.add("active");
+  activeDay=i;
+  renderTabBar();
+  // scroll tab into view
+  const tabEl=document.querySelectorAll(".tab")[i];
+  if(tabEl) tabEl.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+window.onload=function(){
+  // date
+  const d=new Date();
+  const months=["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
+  document.getElementById("topbar-date").textContent=
+    DAYS_FR[todayIdx()]+" "+d.getDate()+" "+months[d.getMonth()];
+
+  // build pages
+  const pages=document.getElementById("pages");
+  for(let i=0;i<7;i++){
+    const div=document.createElement("div");
+    div.className="page"+(i===activeDay?" active":"");
+    div.id=`page_${i}`;
+    pages.appendChild(div);
+    renderDay(i);
+  }
+
+  renderTabBar();
+};
+</script>
+</body>
+</html>
