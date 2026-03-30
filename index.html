@@ -14,37 +14,28 @@
   --bg:#0c0c0c;--card:#161616;--border:#1e1e1e;--border2:#242424;
   --text:#e8e4dc;--muted:#555;--muted2:#888;
   --sleep:#4a9eff;--face:#ff9f4a;--sport:#4aff9f;
-  --height:#c44aff;--food:#ffdf4a;--always:#ff4a6e;
+  --height:#c44aff;--food:#ffdf4a;--always:#ff4a6e;--hygiene:#a8d8a8;
 }
 html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;min-height:100vh;overscroll-behavior:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-
-/* TOP BAR */
 #topbar{position:sticky;top:0;z-index:100;background:rgba(12,12,12,0.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 14px 0}
 #topbar-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 #topbar-title{font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
 #topbar-date{font-size:11px;color:var(--muted2);font-family:monospace}
-#tabs{display:flex;overflow-x:auto;gap:1px;scrollbar-width:none;padding-bottom:0}
+#tabs{display:flex;overflow-x:auto;gap:1px;scrollbar-width:none}
 #tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;min-width:46px;padding:8px 10px 10px;border-bottom:2px solid transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:border-color 0.15s}
+.tab{flex-shrink:0;min-width:46px;padding:8px 10px 10px;border-bottom:2px solid transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px}
 .tab.active{border-bottom-color:var(--text)}
-.tab-name{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;transition:color 0.15s}
+.tab-name{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px}
 .tab.active .tab-name,.tab.today .tab-name{color:var(--text)}
 .tab-mini-bar{width:26px;height:3px;border-radius:2px;background:#1e1e1e;overflow:hidden}
-.tab-mini-fill{height:100%;border-radius:2px;background:var(--sleep);transition:width 0.3s}
+.tab-mini-fill{height:100%;border-radius:2px;transition:width 0.3s}
 .tab-sport{font-size:9px;color:#444;font-family:monospace}
-
-/* PAGE */
 .page{display:none;padding:8px 14px 80px}
 .page.active{display:block}
-
-/* DAY HEADER */
 .day-header{padding:8px 0 14px;display:flex;justify-content:space-between;align-items:flex-start}
 .day-title{font-size:22px;font-weight:900;letter-spacing:-0.5px}
 .day-sub{font-size:11px;color:var(--muted);margin-top:3px}
 .badge-today{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 7px;border-radius:3px;background:rgba(74,255,159,0.12);color:var(--sport);border:1px solid rgba(74,255,159,0.2)}
-
-/* PROGRESS */
 .prog-box{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:11px 13px;margin-bottom:18px}
 .prog-row{display:flex;justify-content:space-between;margin-bottom:7px}
 .prog-label{font-size:11px;color:var(--muted);font-family:monospace}
@@ -52,8 +43,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .prog-bar{height:3px;background:#1a1a1a;border-radius:2px;overflow:hidden}
 .prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--sport),var(--sleep));transition:width 0.4s}
 .prog-done{text-align:center;color:var(--sport);font-size:12px;font-weight:700;margin-top:8px;letter-spacing:2px}
-
-/* SECTION */
 .sec{margin-bottom:20px}
 .sec-header{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:10px}
 .sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
@@ -62,43 +51,53 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .items{display:flex;flex-direction:column;gap:4px}
 
 /* ITEM */
-.item{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:background 0.15s,border-color 0.15s;user-select:none}
+.item{background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden}
 .item.done{background:#1a2a1a;border-color:#2d4a2d}
 .item.done .item-title{text-decoration:line-through;color:var(--muted)}
-.item.done .item-desc{display:none}
-.chk{width:20px;height:20px;border-radius:4px;flex-shrink:0;margin-top:1px;background:transparent;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.item-top{display:flex;align-items:center;gap:0;padding:11px 10px 11px 12px}
+.item-chk-area{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}
+.item-right{display:flex;align-items:center;gap:6px;flex-shrink:0;padding-left:6px}
+.chk{width:20px;height:20px;border-radius:4px;flex-shrink:0;background:transparent;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
 .item.done .chk{background:var(--sport);border-color:var(--sport)}
 .chk-icon{display:none;color:#000;font-size:11px;font-weight:900;line-height:1}
 .item.done .chk-icon{display:block}
-.item-body{flex:1;min-width:0}
-.item-title{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:3px}
-.item-desc{font-size:11px;color:#666;line-height:1.5}
-.tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:3px;flex-shrink:0;margin-top:1px}
+.item-title{font-size:13px;font-weight:700;line-height:1.3}
+.tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:3px;flex-shrink:0}
+.exp-btn{font-size:12px;color:#444;transition:transform 0.2s;cursor:pointer;padding:4px 2px;line-height:1;flex-shrink:0}
+.item.expanded .exp-btn{transform:rotate(180deg)}
+.item-desc{display:none;padding:0 12px 12px 42px;font-size:11px;color:#777;line-height:1.65}
+.item.expanded .item-desc{display:block}
 
 /* SPORT CARD */
 .sport-card{background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;margin-bottom:4px}
 .sport-card.all-done{background:#1a2a1a;border-color:#2d4a2d}
-.sport-header{padding:13px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.sport-header{padding:13px 12px;display:flex;align-items:center;gap:10px;cursor:pointer}
 .sport-arrow{font-size:11px;color:#444;transition:transform 0.2s;margin-left:4px}
 .sport-card.open .sport-arrow{transform:rotate(180deg)}
 .sport-body{display:none;border-top:1px solid var(--border);padding:0 12px 12px}
 .sport-card.open .sport-body{display:block}
-.ex-row{padding:11px 0;border-bottom:1px solid #1a1a1a;display:flex;align-items:flex-start;gap:10px;cursor:pointer;user-select:none}
+.ex-row{border-bottom:1px solid #1a1a1a;overflow:hidden}
 .ex-row:last-child{border-bottom:none}
-.ex-chk{width:16px;height:16px;border-radius:3px;flex-shrink:0;margin-top:2px;background:transparent;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.ex-row.done .ex-name{text-decoration:line-through;color:var(--muted)}
+.ex-top{padding:11px 0;display:flex;align-items:center;gap:10px}
+.ex-chk-area{display:flex;align-items:center;gap:10px;flex:1;cursor:pointer}
+.ex-chk{width:16px;height:16px;border-radius:3px;flex-shrink:0;background:transparent;border:1.5px solid #333;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
 .ex-row.done .ex-chk{background:var(--sport);border-color:var(--sport)}
 .ex-chk-icon{display:none;color:#000;font-size:9px;font-weight:900}
 .ex-row.done .ex-chk-icon{display:block}
-.ex-row.done .ex-name{text-decoration:line-through;color:var(--muted)}
+.ex-body{flex:1}
 .ex-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
-.ex-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ex-meta{display:flex;gap:8px;flex-wrap:wrap}
 .ex-sets{font-size:11px;color:var(--sport);font-family:monospace}
 .ex-rest{font-size:11px;color:#444}
 .ex-prog{font-size:10px;color:#555;font-style:italic}
+.ex-exp{font-size:11px;color:#444;cursor:pointer;transition:transform 0.2s;flex-shrink:0}
+.ex-row.expanded .ex-exp{transform:rotate(180deg)}
+.ex-detail{display:none;padding:0 0 10px 26px;font-size:11px;color:#666;line-height:1.65}
+.ex-row.expanded .ex-detail{display:block}
 </style>
 </head>
 <body>
-
 <div id="topbar">
   <div id="topbar-row">
     <div id="topbar-title">Master Protocol</div>
@@ -106,177 +105,206 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
   <div id="tabs"></div>
 </div>
-
 <div id="pages"></div>
-
 <script>
-// ─── DATA ─────────────────────────────────────────────────────────────────
-
-const CATS = {
+const CATS={
   sleep:  {bg:"rgba(74,158,255,0.12)", text:"#4a9eff", border:"rgba(74,158,255,0.25)", label:"Sommeil"},
   face:   {bg:"rgba(255,159,74,0.12)", text:"#ff9f4a", border:"rgba(255,159,74,0.25)",  label:"Visage"},
   sport:  {bg:"rgba(74,255,159,0.12)", text:"#4aff9f", border:"rgba(74,255,159,0.25)", label:"Sport"},
   height: {bg:"rgba(196,74,255,0.12)", text:"#c44aff", border:"rgba(196,74,255,0.25)", label:"Taille"},
   food:   {bg:"rgba(255,223,74,0.12)", text:"#ffdf4a", border:"rgba(255,223,74,0.25)", label:"Nutrition"},
   always: {bg:"rgba(255,74,110,0.12)", text:"#ff4a6e", border:"rgba(255,74,110,0.25)", label:"Toujours"},
+  hygiene:{bg:"rgba(168,216,168,0.12)",text:"#a8d8a8", border:"rgba(168,216,168,0.25)",label:"Hygiène"},
 };
 
-const MATIN = [
-  {id:"m1",cat:"face",  title:"Drainage cervical",       desc:"Pouces le long du SCM (oreille → clavicule) × 10 passages. Puis sous la mâchoire vers les oreilles × 8. Puis sous les pommettes × 8. Toujours dans cet ordre — ouvre la sortie avant d'envoyer le fluide."},
-  {id:"m2",cat:"face",  title:"Relâche masséter",         desc:"Pouces sur l'angle de la mâchoire, mouvements circulaires remontants 30s. Puis milieu joue : enfoncer + ouvrir grand la bouche 8×."},
-  {id:"m3",cat:"face",  title:"Stretch lingual",          desc:"Tirer langue avec tissu, tourner gauche/droite 5× chaque côté. Puis vers le haut et vers le bas, maintenir 3s. Libère le fascia spiral — langue tendue = mewing impossible."},
-  {id:"m4",cat:"face",  title:"Thumb pulling — matin",    desc:"Dos au mur, menton rentré. Pouces sur bords extérieurs du palais, pression vers haut + extérieur simultanément. 5–6 séries × 10s. 3 zones : arrière → milieu → avant."},
+const MATIN_HYG=[
+  {id:"mh1",cat:"hygiene",title:"Verre d'eau au réveil",desc:"Avant tout le reste. Réhydrate après 8h de jeûne, relance le métabolisme. Grand verre (250–300ml) bu en entier."},
+  {id:"mh2",cat:"hygiene",title:"Se laver le visage",desc:"Eau tiède, nettoyant doux. Rincer à l'eau froide pour resserrer les pores. Sécher en tapotant (pas en frottant). Le matin on enlève le sébum de nuit, pas besoin de nettoyant très puissant."},
+  {id:"mh3",cat:"hygiene",title:"Brosser les dents",desc:"2 minutes minimum, mouvements circulaires doux. Inclure la langue (bactéries = mauvaise haleine). Attendre 30 min si tu bois un jus acide avant — l'émail est temporairement fragilisé."},
+  {id:"mh4",cat:"hygiene",title:"Déodorant",desc:"Sur peau propre et sèche pour une efficacité maximale. Préférer sans aluminium si possible (perturbateur hormonal à haute dose sur le long terme)."},
+  {id:"mh5",cat:"hygiene",title:"S'habiller — tenue propre",desc:"Vêtements propres, bien ajustés. Des vêtements bien fittés améliorent la posture perçue, la confiance et l'impression donnée. Éviter tout ce qui comprime la colonne vertébrale."},
 ];
 
-const SOIR = [
-  {id:"s1",cat:"face",  title:"Hyoid swallow",            desc:"Tête légèrement en arrière (20–30°). Avaler salive en hard mewing simultané. Sentir tension sous la mâchoire. 3 × 15 reps. Brûlure sous le menton = normal."},
-  {id:"s2",cat:"face",  title:"Jaw opening résisté",      desc:"Poing sous le menton. Ouvrir bouche lentement contre résistance (3s ouvrir, 3s fermer). 3 × 12 reps. Réduit aussi le serrement nocturne."},
-  {id:"s3",cat:"face",  title:"Thumb pulling — soir",     desc:"Même protocole que le matin. 2× par jour = facteur clé pour les sutures palatines à 15 ans."},
-  {id:"s4",cat:"height",title:"Bar hang décompression",   desc:"Suspension complète, jambes croisées, corps relâché. Respiration contrôlée — pas de Valsalva. 3 × 30–45s. Suivi immédiatement de 10 squat jumps pour recomprimer les disques."},
-  {id:"s5",cat:"height",title:"Chin tucks",               desc:"Debout : rentrer le menton en allongeant la nuque vers le haut (pas baisser la tête). Maintenir 5s. 2 × 15 reps. Tête en avant = hyoïde descend mécaniquement."},
+const MATIN_PROTO=[
+  {id:"m1",cat:"face",  title:"Drainage cervical",       desc:"Pouces le long du SCM (oreille → clavicule) × 10 passages descendants. Puis sous la mâchoire vers les oreilles × 8. Puis sous les pommettes × 8. Toujours cet ordre — ouvrir la sortie lymphatique avant d'envoyer le fluide."},
+  {id:"m2",cat:"face",  title:"Relâche masséter",        desc:"Pouces sur l'angle de la mâchoire, mouvements circulaires remontants 30s. Puis milieu joue : enfoncer + ouvrir grand la bouche 8×. Libère tensions de mastication et de serrement nocturne (bruxisme)."},
+  {id:"m3",cat:"face",  title:"Stretch lingual",         desc:"Tirer la langue avec un tissu propre. Tourner gauche/droite 5× chaque côté. Puis vers le haut et le bas, maintenir 3s. Libère le fascia spiral de la langue — une langue tendue rend le mewing impossible."},
+  {id:"m4",cat:"face",  title:"Thumb pulling — matin",   desc:"Dos au mur, menton rentré. Pouces sur les bords extérieurs du palais, pression vers le haut + vers l'extérieur simultanément. 5–6 séries × 10s. 3 zones : arrière → milieu → avant. À 15 ans les sutures palatines sont encore actives."},
+  {id:"m5",cat:"food",  title:"Petit-déjeuner ★",        desc:"Ne jamais sauter. Préparer la veille si tu sors en retard. Yaourt grec + flocons d'avoine + fruits secs ≈ 30–35g protéines en 3 min. Sans petit-déj = catabolisme musculaire (16h de jeûne depuis le dîner)."},
 ];
 
-const COMMON = [
-  {id:"c1",cat:"sleep", title:"Téléphone hors chambre à 23h ★",desc:"Mode avion, posé hors de la chambre. 70% de la GH sécrétée pendant le sommeil profond. Pas de négociation."},
-  {id:"c2",cat:"sleep", title:"Couché avant 23h → 8h30 min",   desc:"Objectif pubertaire : 8h30 minimum. Rythme fixe même le week-end. Rythme circadien régulier = GH optimisée."},
-  {id:"c3",cat:"food",  title:"Petit-déjeuner ★",               desc:"Préparer la veille. Yaourt grec + flocons + fruits secs ≈ 30g protéines en 2 min. Ne jamais sauter : 16h de jeûne = catabolisme matinal."},
-  {id:"c4",cat:"food",  title:"2–2.5L d'eau",                   desc:"1L matin, 1L après-midi, reste le soir. Déshydratation = disques intervertébraux comprimés = taille réduite."},
-  {id:"c5",cat:"face",  title:"Mewing toute la journée",        desc:"Langue entière contre le palais (tiers postérieur inclus). Avaler sa salive pour trouver la position, puis maintenir. Alarme toutes les 2h."},
-  {id:"c6",cat:"face",  title:"Respiration nasale exclusive",   desc:"Toujours. Bouche fermée au repos. Respiration buccale chronique = palais étroit, mâchoire reculée, hyoïde bas."},
-  {id:"c7",cat:"face",  title:"Déglutition correcte",           desc:"Langue vers le palais (pas vers les dents). Seuls les muscles du cou bougent. Visage neutre en avalant."},
-  {id:"c8",cat:"face",  title:"Mastication bilatérale",         desc:"Les deux côtés, 20–30 masticatoires par bouchée. Aliments durs si possible : viande, carottes, noix."},
+const JOURNEE_HYG=[
+  {id:"jh1",cat:"food",  title:"Eau — 2 à 2.5L aujourd'hui",desc:"1L le matin, 1L l'après-midi, reste le soir. Déshydratation = disques intervertébraux comprimés + peau terne + concentration réduite. Bouteille visible = rappel naturel."},
+  {id:"jh2",cat:"hygiene",title:"Changer de sous-vêtements",desc:"Quotidien. Prévention des irritations, infections bactériennes et odeurs. Base non-négociable."},
+  {id:"jh3",cat:"hygiene",title:"Vérifier propreté des ongles",desc:"Ongles courts et propres. L'un des premiers détails remarqués dans une interaction sociale. Couper à plat pour les pieds (évite les incarnés)."},
 ];
 
-const HEBDO = [
-  {id:"h1",cat:"face",  title:"Massage drainage complet",       desc:"Ordre obligatoire : cou → sous mâchoire → milieu joue (ouvrir bouche) → sous menton → pommettes → masséter → bords nez → oreilles/TMJ → retour cou. 10–12 min."},
-  {id:"h2",cat:"face",  title:"Chewing gum dur (Falim)",        desc:"10–15 min max. Côté faible en priorité si asymétrie. Hypertrophie masséter → carré de mâchoire."},
-  {id:"h3",cat:"height",title:"Tractions excentriques lentes",  desc:"Descente 5–6s très lente, pause 3s bras tendus. 3–5 reps. Améliore la rétention d'eau des disques intervertébraux."},
+const SOIR_HYG=[
+  {id:"sh1",cat:"hygiene",title:"Douche — eau tiède + 30s froide",desc:"Eau tiède pour nettoyer. Finir par 30 secondes d'eau froide : réduit inflammation, resserre les pores, améliore la circulation cutanée. Shampooing max 3× par semaine pour ne pas décaper le sébum protecteur."},
+  {id:"sh2",cat:"hygiene",title:"Nettoyant visage (soir) ★",  desc:"LE nettoyage le plus important de la journée. Élimine sébum + pollution + bactéries accumulés. Ne jamais dormir sans nettoyer le visage — 8h de contact = recette acné garantie. Produit doux, sans alcool."},
+  {id:"sh3",cat:"hygiene",title:"Hydratant visage",           desc:"Appliquer sur peau encore légèrement humide (juste après nettoyage). Même peau grasse en a besoin — peau déshydratée produit plus de sébum en compensation. Sans alcool ni parfum."},
+  {id:"sh4",cat:"hygiene",title:"Brosser les dents + fil dentaire",desc:"Le brossage du soir est le plus critique : 8h sans interruption si tu ne te brosses pas = prolifération bactérienne. Fil dentaire 1× par jour prévient gingivite et caries interdentaires que la brosse ne touche pas."},
 ];
 
-const SPORT = {
-  J1:{label:"Push + Core",      exs:[
-    {n:"Pompes sur poings (coudes 45°)",       s:"4 × 8–12",  r:"90s",   p:"→ 4×12 : pompes archer"},
-    {n:"Dips (buste penché en avant)",         s:"4 × 6–10",  r:"2 min", p:"→ 4×10 : lester avec bande"},
-    {n:"Pike push-ups (poings)",               s:"3 × 8–12",  r:"90s",   p:"→ 3×12 : pieds surélevés"},
-    {n:"Hollow body hold",                     s:"4 × 20–40s",r:"60s",   p:"→ 4×40s : hollow rocks"},
-    {n:"Lever de jambes suspendu",             s:"3 × 8–12",  r:"90s",   p:"Genoux → jambes tendues"},
+const SOIR_PROTO=[
+  {id:"s1",cat:"face",  title:"Hyoid swallow",            desc:"Tête légèrement en arrière (20–30°). Avaler salive en hard mewing simultané. Sentir la forte tension sous la mâchoire. 3 × 15 reps. Brûlure sous le menton = normal. Meilleur exercice pour les 4 muscles suprahyoïdiens."},
+  {id:"s2",cat:"face",  title:"Jaw opening résisté",      desc:"Poing sous le menton. Ouvrir bouche lentement contre résistance de la main (3s ouvrir, 3s fermer). 3 × 12 reps. Double bénéfice : suprahyoïdiens + réduction du serrement nocturne."},
+  {id:"s3",cat:"face",  title:"Thumb pulling — soir",     desc:"Même protocole que le matin. 2 sessions/jour = facteur clé. Les sutures palatines ont besoin de stimulation régulière pour répondre. 5–6 séries × 10s, 3 zones."},
+  {id:"s4",cat:"height",title:"Bar hang décompression",   desc:"Suspension complète, jambes croisées, corps relâché. Respiration normale — pas de Valsalva (bloquer l'air augmente la pression sur les disques). 3 × 30–45s. Suivi immédiatement de 10 squat jumps pour recomprimer les disques."},
+  {id:"s5",cat:"height",title:"Chin tucks soir",          desc:"Debout : rentrer le menton en allongeant la nuque vers le haut. Maintenir 5s. 2 × 15. Chaque cm de tête en avant = ~5kg de charge sur la colonne + hyoïde mécaniquement abaissé."},
+];
+
+const COUCHER=[
+  {id:"ch1",cat:"sleep", title:"Téléphone hors chambre à 23h ★",desc:"Mode avion, posé hors de la chambre. La lumière bleue supprime physiologiquement la mélatonine. 70% de la GH sécrétée pendant le sommeil profond = ta croissance et ta récupération musculaire."},
+  {id:"ch2",cat:"sleep", title:"Couché avant 23h → 8h30 min",   desc:"Pendant la puberté : 8h30 minimum, 10h idéalement. Rythme fixe même le week-end. Chambre froide (18–19°C) et sombre. L'irrégularité du rythme circadien casse la sécrétion nocturne de GH."},
+  {id:"ch3",cat:"hygiene",title:"Changer de taie d'oreiller (2×/sem)",desc:"Contact 8h/nuit. Sébum + bactéries + cellules mortes s'accumulent rapidement. Facteur acné significatif souvent négligé. Retourner la taie les jours sans changement."},
+];
+
+const TOUJOURS=[
+  {id:"t1",cat:"face",  title:"Mewing — toute la journée",      desc:"Langue entière contre le palais (tiers postérieur inclus). Dents légèrement en contact, lèvres fermées, respiration nasale. Avaler sa salive pour trouver la position puis maintenir. Alarme toutes les 2h pour check. Mécanotransduction = remodelage osseux lent mais réel."},
+  {id:"t2",cat:"face",  title:"Respiration nasale exclusive",    desc:"Toujours — repos, effort, sommeil. Respiration buccale chronique = palais étroit, mâchoire reculée, hyoïde bas, moins d'oxyde nitrique sanguin. Si difficile la nuit : tape respiratoire (Myotape) sur les lèvres."},
+  {id:"t3",cat:"face",  title:"Déglutition correcte",           desc:"En avalant : langue monte vers le palais (pas vers les dents). Seuls les muscles du cou bougent. Visage neutre. Déglutition infantile = pression chronique qui écrase la maxilla vers le bas."},
+  {id:"t4",cat:"face",  title:"Mastication bilatérale",         desc:"Les deux côtés à chaque repas, 20–30 masticatoires par bouchée. Aliments durs si possible. 2–3×/sem : Falim ou Mastic gum 10–15 min max (côté faible en priorité)."},
+  {id:"t5",cat:"height",title:"Posture cervicale correcte",     desc:"Oreilles au-dessus des épaules en permanence. Check : dos au mur, talons + fesses + épaules + tête touchent le mur = position neutre. Tête en avant = hyoïde baisse + respiration buccale favorisée + perte de taille mesurable."},
+  {id:"t6",cat:"food",  title:"Protéines ≥ 140g/jour",          desc:"~1.8g/kg. Sources : œufs, poulet, fromage blanc, thon, lentilles. Sans ça les séances de sport ne construisent rien — pas de matière première pour le muscle."},
+  {id:"t7",cat:"food",  title:"Calcium + D3 + K2",              desc:"Calcium : laitages, sardines. D3 : soleil + poissons gras + complément en hiver. K2 : beurre, jaunes d'œufs, fromages affinés. Trio essentiel pour les plaques de croissance et la minéralisation osseuse."},
+];
+
+const HEBDO=[
+  {id:"h1",cat:"face",   title:"Drainage complet (2–3×/sem)",      desc:"Ordre : cou → sous mâchoire → milieu joue (bouche ouverte) → sous menton → pommettes → masséter → bords nez → oreilles/TMJ → retour cou. Commencer ET finir par le cou. 10–12 min."},
+  {id:"h2",cat:"face",   title:"Chewing gum dur Falim (2–3×/sem)", desc:"10–15 min max. Côté faible en priorité. Hypertrophie masséter = carré de mâchoire. Ne pas dépasser pour éviter TMJ."},
+  {id:"h3",cat:"height", title:"Tractions excentriques (2–3×/sem)",desc:"Montée normale, descente 5–6s très lente, pause 3s bras tendus. 3–5 reps. Améliore la rétention d'eau des disques intervertébraux — effet cumulatif sur la taille debout."},
+  {id:"h4",cat:"hygiene",title:"Nettoyer les oreilles (1×/sem)",   desc:"Coton-tige en extérieur uniquement. Ou spray auriculaire doux. Ne jamais insérer dans le canal — repousse le cérumen vers le fond."},
+  {id:"h5",cat:"hygiene",title:"Couper les ongles si besoin (1×/sem)",desc:"Pieds et mains. Ongles de pieds à plat pour éviter les incarnés. Détail très remarqué socialement."},
+  {id:"h6",cat:"hygiene",title:"Laver les draps (1×/sem)",         desc:"8h de contact par nuit. Programme 60°C pour les acariens. Draps sales = acné dorsale + irritations. Changer taie en même temps."},
+];
+
+const SPORT={
+  J1:{label:"Push + Core",exs:[
+    {n:"Pompes sur poings (coudes 45°)",       s:"4 × 8–12",  r:"90s",  p:"→ 4×12 : pompes archer",      d:"Poings à largeur d'épaules. Coudes à 45° (ni collés ni écartés). Descente 3s lente, poussée explosive. Cible pectoraux + triceps."},
+    {n:"Dips (buste penché en avant)",         s:"4 × 6–10",  r:"2 min",p:"→ 4×10 : lester avec bande",  d:"Légèrement penché pour cibler les pecs. Descente 3s jusqu'à l'étirement pectoral. Ne pas verrouiller les coudes en haut."},
+    {n:"Pike push-ups (poings)",               s:"3 × 8–12",  r:"90s",  p:"→ 3×12 : pieds surélevés",    d:"Hanches hautes, corps en V inversé, tête vers le sol. Isole les deltoïdes antérieurs. Descente jusqu'à frôler le sol."},
+    {n:"Hollow body hold",                     s:"4 × 20–40s",r:"60s",  p:"→ 4×40s : hollow rocks",      d:"Bas du dos PLAQUÉ au sol — point clé. Jambes tendues à 30–45°, bras tendus derrière la tête. Si trop dur : genoux fléchis."},
+    {n:"Lever de jambes suspendu",             s:"3 × 8–12",  r:"90s",  p:"Genoux → jambes tendues",      d:"À la barre. Montée lente, descente contrôlée 3s. Éviter le balancement. Genoux fléchis si jambes tendues impossible."},
   ]},
-  J2:{label:"Pull + Biceps",    exs:[
-    {n:"Tractions pronation (full ROM)",       s:"4 × 5–8",   r:"2 min", p:"→ 4×8 : lest progressif"},
-    {n:"Tractions supination",                 s:"3 × 5–8",   r:"2 min", p:"Même logique"},
-    {n:"Australian pull-ups",                  s:"3 × 10–15", r:"90s",   p:"→ pieds surélevés"},
-    {n:"Curl haltère alterné (10kg)",          s:"3 × 8–12",  r:"90s",   p:"→ 3×12 : tempo 4s"},
-    {n:"Face pulls bande",                     s:"3 × 15–20", r:"60s",   p:"Bande plus résistante"},
+  J2:{label:"Pull + Biceps",exs:[
+    {n:"Tractions pronation (full ROM)",       s:"4 × 5–8",   r:"2 min",p:"→ 4×8 : lest progressif",     d:"Bras ENTIÈREMENT tendus en bas à chaque rep — obligatoire. Descente 3s contrôlée. Mains légèrement plus larges que les épaules."},
+    {n:"Tractions supination",                 s:"3 × 5–8",   r:"2 min",p:"Même logique",                 d:"Prise supine (paumes vers toi), mains à largeur d'épaules. Coudes près du corps. Cible biceps + bas des dorsaux. Descente 3s."},
+    {n:"Australian pull-ups",                  s:"3 × 10–15", r:"90s",  p:"→ pieds surélevés",            d:"Barre à hauteur poitrine. Corps incliné et raide. Tirer la poitrine vers la barre. Régler la difficulté en changeant l'inclinaison."},
+    {n:"Curl haltère alterné (10kg)",          s:"3 × 8–12",  r:"90s",  p:"→ 3×12 : tempo 4s",           d:"Buste fixe, coudes collés. Supination complète en haut. Descente 3s. Si le buste se balance = charge trop lourde."},
+    {n:"Face pulls bande",                     s:"3 × 15–20", r:"60s",  p:"Bande plus résistante",        d:"Bande à hauteur des yeux. Tirer vers le visage, coudes hauts, mains qui s'écartent. Santé des épaules — compense les poussées."},
   ]},
-  J3:{label:"Jambes + Core",    exs:[
-    {n:"Squat bulgare",                        s:"4 × 8–12",  r:"2 min", p:"Corps → 5kg → 10kg"},
-    {n:"Hip thrust (épaules sur canapé)",      s:"4 × 12–15", r:"90s",   p:"Lest progressif"},
-    {n:"Nordic curl négatif (4–5s)",           s:"3 × 4–6",   r:"2 min", p:"→ remontée complète"},
-    {n:"Mollets sur marche",                   s:"4 × 15–20", r:"60s",   p:"Bilatéral → unilatéral"},
-    {n:"Ab wheel / planche dynamique",         s:"3 × 8–12",  r:"90s",   p:"Genoux → debout"},
+  J3:{label:"Jambes + Core",exs:[
+    {n:"Squat bulgare",                        s:"4 × 8–12",  r:"2 min",p:"Corps → 5kg → 10kg",          d:"Pied arrière sur chaise, pied avant loin devant. Descente 3s. Genou avant ne dépasse pas trop le pied. Roi du squat unilatéral."},
+    {n:"Hip thrust (épaules sur canapé)",      s:"4 × 12–15", r:"90s",  p:"Lest progressif",             d:"Épaules sur le bord du canapé, pieds à plat. Haltères sur les hanches. Alignement hanche-genou-épaule en haut. Serrer fessiers 1s. Descente 2s."},
+    {n:"Nordic curl négatif (4–5s)",           s:"3 × 4–6",   r:"2 min",p:"→ remontée complète",         d:"Pieds bloqués sous meuble lourd. Se laisser tomber TRÈS lentement (4–5s). Mains pour remonter. Ischio-jambiers en excentrique = très efficace."},
+    {n:"Mollets sur marche",                   s:"4 × 15–20", r:"60s",  p:"Bilatéral → unilatéral",      d:"Avant du pied sur le bord d'une marche. Descente complète (talon sous le niveau), montée explosive sur la pointe. Full ROM obligatoire."},
+    {n:"Ab wheel / planche dynamique",         s:"3 × 8–12",  r:"90s",  p:"Genoux → debout",             d:"Rouler vers l'avant en maintenant le gainage, revenir. Sinon : planche avec tap alterné des épaules. Gainage anti-rotation."},
   ]},
-  J4:{label:"Push — Volume",    exs:[
-    {n:"Pompes diamant (poings)",              s:"4 × 8–12",  r:"90s",   p:"→ pieds surélevés"},
-    {n:"Pompes larges (poings)",               s:"3 × 10–15", r:"90s",   p:"Volume pur"},
-    {n:"Dips lestés (bande)",                  s:"4 × 6–8",   r:"2 min", p:"Lest progressif"},
-    {n:"Lateral raise haltères (5kg)",         s:"3 × 12–15", r:"60s",   p:"5kg → 10kg"},
-    {n:"Triceps overhead haltère (10kg)",      s:"3 × 10–12", r:"90s",   p:"→ 3×12 puis charge"},
+  J4:{label:"Push — Volume",exs:[
+    {n:"Pompes diamant (poings)",              s:"4 × 8–12",  r:"90s",  p:"→ pieds surélevés",           d:"Poings rapprochés sous le sternum. Coudes longeant le corps à la descente. Cible triceps + pec interne. Descente 3s."},
+    {n:"Pompes larges (poings)",               s:"3 × 10–15", r:"90s",  p:"Volume pur",                  d:"Poings le plus écartés possible. Descente 3s. Cible pectoraux externes. Pas de lest — séance volume, on accumule du travail."},
+    {n:"Dips lestés (bande)",                  s:"4 × 6–8",   r:"2 min",p:"Lest progressif",             d:"Bande autour du cou ou haltère entre les pieds. Progression chaque semaine. Le lest sur dips = meilleur levier de force poussée en callisthénie."},
+    {n:"Lateral raise haltères (5kg)",         s:"3 × 12–15", r:"60s",  p:"5kg → 10kg quand 3×15",      d:"Légèrement penché, coudes légèrement fléchis. Montée lente jusqu'à l'horizontal. Descente 3s. Si tu te balances = charge trop lourde."},
+    {n:"Triceps overhead haltère (10kg)",      s:"3 × 10–12", r:"90s",  p:"→ 3×12 puis charge",         d:"Assis ou debout. Haltère 10kg tenu à deux mains derrière la tête. Coudes fixes pointant vers le haut. Extension complète. Descente 3s."},
   ]},
-  J5:{label:"Pull + Neck",      exs:[
-    {n:"Tractions neutres",                    s:"4 × 6–10",  r:"2 min", p:"Lest progressif"},
-    {n:"Australian pull-ups larges",           s:"4 × 10–15", r:"90s",   p:"→ pieds plus hauts"},
-    {n:"Rowing haltère unilatéral (10kg)",     s:"3 × 10–12", r:"90s",   p:"Technique d'abord"},
-    {n:"Chin tucks + neck curl allongé",       s:"3 × 15–20", r:"60s",   p:"→ résistance main"},
-    {n:"Shrugs haltères (10kg)",               s:"3 × 12–15", r:"60s",   p:"Lest progressif"},
+  J5:{label:"Pull + Neck",exs:[
+    {n:"Tractions neutres",                    s:"4 × 6–10",  r:"2 min",p:"Lest progressif",             d:"Prise neutre (paumes face à face). Cible brachial + dorsaux différemment de la pronation. Full ROM. Descente 3s."},
+    {n:"Australian pull-ups larges",           s:"4 × 10–15", r:"90s",  p:"→ pieds plus hauts",          d:"Prise très large en pronation. Corps aussi horizontal que possible. Cible grands dorsaux sur toute leur longueur — crée le V-taper. Tirer coudes vers les hanches."},
+    {n:"Rowing haltère unilatéral (10kg)",     s:"3 × 10–12", r:"90s",  p:"Technique d'abord",           d:"Genou et main sur la chaise. Dos plat. Tirer le coude vers le plafond. ROM complet : bras tendu en bas, coude au-dessus du dos en haut. Descente 3s."},
+    {n:"Chin tucks + neck curl allongé",       s:"3 × 15–20", r:"60s",  p:"→ résistance main",           d:"Allongé : rentrer le menton, soulever uniquement la tête. Descente 3s. Renforce les fléchisseurs profonds du cou — directement lié à la position de l'hyoïde."},
+    {n:"Shrugs haltères (10kg)",               s:"3 × 12–15", r:"60s",  p:"Lest progressif",             d:"Haltères le long du corps. Montée lente, contraction 2s en haut, descente 3s. Ne pas rouler les épaules. Équilibre visuel cou/épaules."},
   ]},
-  J6:{label:"Full Body — Intensité", exs:[
-    {n:"Tractions pronation MAX ← note le chiffre", s:"3 × max", r:"3 min", p:"Benchmark hebdo"},
-    {n:"Dips MAX ← note le chiffre",           s:"3 × max",   r:"3 min", p:"Benchmark hebdo"},
-    {n:"Squat sauté (descente 3s)",            s:"4 × 10",    r:"90s",   p:"→ lest haltères"},
-    {n:"Pompes explosives (poings)",           s:"3 × 6–8",   r:"2 min", p:"→ applaudissement"},
-    {n:"L-sit suspendu",                       s:"4 × max",   r:"90s",   p:"Genoux → tendus"},
+  J6:{label:"Full Body — Intensité",exs:[
+    {n:"Tractions pronation MAX ← note le chiffre !",s:"3 × max",r:"3 min",p:"Benchmark hebdo",         d:"Max reps full ROM strict. Repos 3 min entre séries. Note les 3 chiffres chaque semaine. C'est ton principal indicateur de progression."},
+    {n:"Dips MAX ← note le chiffre !",          s:"3 × max",  r:"3 min",p:"Benchmark hebdo",            d:"Full ROM, pas de rebond. Note les chiffres. Si tes max montent semaine après semaine = le programme fonctionne."},
+    {n:"Squat sauté (descente 3s)",             s:"4 × 10",   r:"90s",  p:"→ lest haltères",            d:"Descente contrôlée 3s, explosion maximale. Atterrissage amorti. Puissance musculaire — différent de la force pure."},
+    {n:"Pompes explosives (poings)",            s:"3 × 6–8",  r:"2 min",p:"→ applaudissement",          d:"Descente 2s contrôlée, poussée explosive pour décoller. Atterrissage souple. Ajouter l'applaudissement quand la poussée est suffisante."},
+    {n:"L-sit suspendu",                        s:"4 × max",  r:"90s",  p:"Genoux → tendus",            d:"Jambes à l'horizontale à la barre. Maintenir. Travaille core, fléchisseurs de hanche, épaules. Commencer genoux fléchis."},
   ]},
-  J7:{label:"Repos actif",      exs:[
-    {n:"Marche 20–30 min",                     s:"—",         r:"—",     p:"Récupération active"},
-    {n:"Étirements statiques (pecs, dorsaux, ischio)", s:"30–60s chaque", r:"—", p:""},
-    {n:"Mewing conscient renforcé",            s:"10 min",    r:"—",     p:""},
-    {n:"Chin tucks légers",                    s:"2 × 15",    r:"—",     p:""},
+  J7:{label:"Repos actif",exs:[
+    {n:"Marche 20–30 min",                      s:"—",        r:"—",    p:"Récupération active",         d:"Rythme tranquille. Active la circulation sans fatiguer les muscles — accélère la récupération des 6 jours."},
+    {n:"Étirements statiques (pecs, dorsaux, ischio)",s:"30–60s chaque",r:"—",p:"",                     d:"Maintenir sans forcer. Jamais étirer muscle froid. Légère résistance, jamais douleur."},
+    {n:"Mewing conscient renforcé",             s:"10 min",   r:"—",    p:"",                            d:"Pratiquer consciemment : posture linguale complète, déglutition correcte, posture cervicale. Jour idéal pour ancrer les habitudes."},
+    {n:"Chin tucks légers",                     s:"2 × 15",   r:"—",    p:"",                            d:"Version légère pour maintenir l'activation. Pas d'effort intense — c'est un jour de repos."},
   ]},
 };
 
-const DAYS_FR    = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
-const DAYS_SHORT = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
-const SPORT_KEYS = ["J1","J2","J3","J4","J5","J6","J7"];
-const HEBDO_DAYS = [2,4,6]; // J3, J5, J7 (index 2,4,6)
-const JS2IDX     = {1:0,2:1,3:2,4:3,5:4,6:5,0:6};
+const DAYS_FR   =["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+const DAYS_SHORT=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+const SPORT_KEYS=["J1","J2","J3","J4","J5","J6","J7"];
+const HEBDO_DAYS=[2,4,6];
+const JS2IDX={1:0,2:1,3:2,4:3,5:4,6:5,0:6};
 
-function todayIdx(){ return JS2IDX[new Date().getDay()]; }
-
-// ─── STATE ────────────────────────────────────────────────────────────────
-// key: "YYYY-MM-DD_itemId" → true/false
-function dateStr(offset=0){
-  const d=new Date(); d.setDate(d.getDate()+offset);
+function todayIdx(){return JS2IDX[new Date().getDay()];}
+function dayDateStr(di){
+  const diff=di-todayIdx();
+  const d=new Date();d.setDate(d.getDate()+diff);
   return d.toISOString().slice(0,10);
 }
-function dayDateStr(dayIdx){
-  const t=todayIdx(); const diff=dayIdx-t;
-  return dateStr(diff);
-}
-function itemKey(dayIdx,id){ return dayDateStr(dayIdx)+"_"+id; }
+function ikey(di,id){return dayDateStr(di)+"_"+id;}
 
-let STATE = {};
-try{ STATE=JSON.parse(localStorage.getItem("mp_state")||"{}"); }catch{}
-function save(){ try{localStorage.setItem("mp_state",JSON.stringify(STATE));}catch{} }
+let ST={};
+try{ST=JSON.parse(localStorage.getItem("mp3")||"{}");}catch{}
+function save(){try{localStorage.setItem("mp3",JSON.stringify(ST));}catch{}}
+function isChk(di,id){return !!ST[ikey(di,id)];}
+function toggleChk(di,id){ST[ikey(di,id)]=!ST[ikey(di,id)];save();renderDay(di);renderTabs();}
 
-function isChecked(dayIdx,id){ return !!STATE[itemKey(dayIdx,id)]; }
-function toggle(dayIdx,id){
-  const k=itemKey(dayIdx,id);
-  STATE[k]=!STATE[k];
-  save();
-  renderDay(dayIdx);
-  renderTabBar();
-}
+const EXP={};
+function isExp(k){return !!EXP[k];}
+function togExp(k){EXP[k]=!EXP[k];}
 
-// ─── RENDER HELPERS ───────────────────────────────────────────────────────
-function tag(cat){
+function tagH(cat){
   const c=CATS[cat];
   return `<span class="tag" style="background:${c.bg};color:${c.text};border:1px solid ${c.border}">${c.label}</span>`;
 }
 
-function itemHTML(it,dayIdx){
-  const done=isChecked(dayIdx,it.id);
-  return `<div class="item${done?" done":""}" onclick="toggle(${dayIdx},'${it.id}')">
-    <div class="chk"><span class="chk-icon">✓</span></div>
-    <div class="item-body">
-      <div class="item-title">${it.title}</div>
-      <div class="item-desc">${it.desc}</div>
+function itemH(it,di){
+  const done=isChk(di,it.id);
+  const exp=isExp(di+"_"+it.id);
+  return `<div class="item${done?" done":""}${exp?" expanded":""}" id="I_${di}_${it.id}">
+    <div class="item-top">
+      <div class="item-chk-area" onclick="toggleChk(${di},'${it.id}')">
+        <div class="chk"><span class="chk-icon">✓</span></div>
+        <span class="item-title">${it.title}</span>
+      </div>
+      <div class="item-right">
+        ${tagH(it.cat)}
+        <span class="exp-btn" onclick="togItemExp(${di},'${it.id}')">▼</span>
+      </div>
     </div>
-    ${tag(it.cat)}
+    <div class="item-desc">${it.desc}</div>
   </div>`;
 }
 
-function sportHTML(dayIdx){
-  const sk=SPORT_KEYS[dayIdx];
+function sportH(di){
+  const sk=SPORT_KEYS[di];
   const sp=SPORT[sk];
-  const allDone=sp.exs.every((_,i)=>isChecked(dayIdx,`ex_${sk}_${i}`));
-  const openClass=`sport_open_${dayIdx}`;
-  const isOpen=window[openClass]||false;
-  let exRows=sp.exs.map((ex,i)=>{
-    const done=isChecked(dayIdx,`ex_${sk}_${i}`);
-    return `<div class="ex-row${done?" done":""}" onclick="toggleEx(${dayIdx},'${sk}',${i})">
-      <div class="ex-chk"><span class="ex-chk-icon">✓</span></div>
-      <div>
-        <div class="ex-name">${ex.n}</div>
-        <div class="ex-meta">
-          <span class="ex-sets">${ex.s}</span>
-          ${ex.r!=="—"?`<span class="ex-rest">repos ${ex.r}</span>`:""}
-          ${ex.p?`<span class="ex-prog">${ex.p}</span>`:""}
+  const allDone=sp.exs.every((_,i)=>isChk(di,`e_${sk}_${i}`));
+  const open=isExp("sp_"+di);
+  const rows=sp.exs.map((ex,i)=>{
+    const done=isChk(di,`e_${sk}_${i}`);
+    const exp=isExp(`ex_${di}_${sk}_${i}`);
+    return `<div class="ex-row${done?" done":""}${exp?" expanded":""}" id="EX_${di}_${sk}_${i}">
+      <div class="ex-top">
+        <div class="ex-chk-area" onclick="toggleChk(${di},'e_${sk}_${i}')">
+          <div class="ex-chk"><span class="ex-chk-icon">✓</span></div>
+          <div class="ex-body">
+            <div class="ex-name">${ex.n}</div>
+            <div class="ex-meta">
+              <span class="ex-sets">${ex.s}</span>
+              ${ex.r!=="—"?`<span class="ex-rest">repos ${ex.r}</span>`:""}
+              ${ex.p?`<span class="ex-prog">${ex.p}</span>`:""}
+            </div>
+          </div>
         </div>
+        <span class="ex-exp" onclick="togExExp(${di},'${sk}',${i})">▼</span>
       </div>
+      ${ex.d?`<div class="ex-detail">${ex.d}</div>`:""}
     </div>`;
   }).join("");
-  return `<div class="sport-card${allDone?" all-done":""}${isOpen?" open":""}" id="sport_card_${dayIdx}">
-    <div class="sport-header" onclick="toggleSport(${dayIdx})">
+  return `<div class="sport-card${allDone?" all-done":""}${open?" open":""}" id="SC_${di}">
+    <div class="sport-header" onclick="togSport(${di})">
       <div class="chk" style="${allDone?"background:var(--sport);border-color:var(--sport)":""}">
         ${allDone?'<span class="chk-icon" style="display:block">✓</span>':""}
       </div>
@@ -284,87 +312,85 @@ function sportHTML(dayIdx){
         <div style="font-size:13px;font-weight:700;color:${allDone?"var(--muted)":"var(--text)"}">Séance — ${sp.label}</div>
         <div style="font-size:10px;color:var(--muted);margin-top:2px">${sp.exs.length} exercices · appuie pour voir</div>
       </div>
-      ${tag("sport")}
+      ${tagH("sport")}
       <span class="sport-arrow">▼</span>
     </div>
-    <div class="sport-body">${exRows}</div>
+    <div class="sport-body">${rows}</div>
   </div>`;
 }
 
-function dayProgress(dayIdx){
-  const sk=SPORT_KEYS[dayIdx];
-  const items=[...MATIN,...SOIR,...COMMON];
-  if(HEBDO_DAYS.includes(dayIdx)) items.push(...HEBDO);
-  const exIds=SPORT[sk].exs.map((_,i)=>`ex_${sk}_${i}`);
-  const total=items.length+exIds.length;
-  const done=items.filter(t=>isChecked(dayIdx,t.id)).length+exIds.filter(id=>isChecked(dayIdx,id)).length;
-  return{done,total,pct:total>0?Math.round(done/total*100):0};
-}
-
-function section(title,time,dotColor,content){
+function sec(title,time,dot,html){
   return `<div class="sec">
     <div class="sec-header">
-      <div class="sec-dot" style="background:${dotColor}"></div>
+      <div class="sec-dot" style="background:${dot}"></div>
       <span class="sec-title">${title}</span>
       ${time?`<span class="sec-time">${time}</span>`:""}
     </div>
-    <div class="items">${content}</div>
+    <div class="items">${html}</div>
   </div>`;
 }
 
-function renderDay(dayIdx){
-  const el=document.getElementById(`page_${dayIdx}`);
-  if(!el)return;
-  const sk=SPORT_KEYS[dayIdx];
-  const {done,total,pct}=dayProgress(dayIdx);
-  const isToday=dayIdx===todayIdx();
+function dayProg(di){
+  const sk=SPORT_KEYS[di];
+  const items=[...MATIN_HYG,...MATIN_PROTO,...JOURNEE_HYG,...SOIR_HYG,...SOIR_PROTO,...COUCHER,...TOUJOURS];
+  if(HEBDO_DAYS.includes(di))items.push(...HEBDO);
+  const exIds=SPORT[sk].exs.map((_,i)=>`e_${sk}_${i}`);
+  const total=items.length+exIds.length;
+  const done=items.filter(t=>isChk(di,t.id)).length+exIds.filter(id=>isChk(di,id)).length;
+  return{done,total,pct:total>0?Math.round(done/total*100):0};
+}
 
+function renderDay(di){
+  const el=document.getElementById(`P_${di}`);
+  if(!el)return;
+  const sk=SPORT_KEYS[di];
+  const{done,total,pct}=dayProg(di);
+  const isT=di===todayIdx();
   el.innerHTML=`
     <div class="day-header">
-      <div>
-        <div class="day-title">${DAYS_FR[dayIdx]}</div>
-        <div class="day-sub">${sk} — ${SPORT[sk].label}</div>
-      </div>
-      ${isToday?'<span class="badge-today">Aujourd\'hui</span>':""}
+      <div><div class="day-title">${DAYS_FR[di]}</div><div class="day-sub">${sk} — ${SPORT[sk].label}</div></div>
+      ${isT?'<span class="badge-today">Aujourd\'hui</span>':""}
     </div>
-
     <div class="prog-box">
-      <div class="prog-row">
-        <span class="prog-label">Progression</span>
-        <span class="prog-num">${done} / ${total}</span>
-      </div>
+      <div class="prog-row"><span class="prog-label">Progression</span><span class="prog-num">${done} / ${total}</span></div>
       <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
       ${pct===100?'<div class="prog-done">JOURNÉE COMPLÈTE ✓</div>':""}
     </div>
-
-    ${section("Matin","~15 min","#ff9f4a", MATIN.map(t=>itemHTML(t,dayIdx)).join(""))}
-    ${section("Sport", sk==="J7"?"~20 min":"~35–45 min","#4aff9f", sportHTML(dayIdx))}
-    ${section("Soir","~15 min","#c44aff", SOIR.map(t=>itemHTML(t,dayIdx)).join(""))}
-    ${HEBDO_DAYS.includes(dayIdx)?section("Hebdomadaire (ce jour)","~12 min","#ff9f4a", HEBDO.map(t=>itemHTML(t,dayIdx)).join("")):""}
-    ${section("Toujours — toute la journée","","#ff4a6e", COMMON.map(t=>itemHTML(t,dayIdx)).join(""))}
+    ${sec("Matin — Hygiène","",CATS.hygiene.text,MATIN_HYG.map(t=>itemH(t,di)).join(""))}
+    ${sec("Matin — Protocole","~15 min",CATS.face.text,MATIN_PROTO.map(t=>itemH(t,di)).join(""))}
+    ${sec("Sport",sk==="J7"?"~20 min":"~35–45 min",CATS.sport.text,sportH(di))}
+    ${sec("Journée — Hydratation & Hygiène","",CATS.hygiene.text,JOURNEE_HYG.map(t=>itemH(t,di)).join(""))}
+    ${sec("Soir — Hygiène","",CATS.hygiene.text,SOIR_HYG.map(t=>itemH(t,di)).join(""))}
+    ${sec("Soir — Protocole","~15 min",CATS.height.text,SOIR_PROTO.map(t=>itemH(t,di)).join(""))}
+    ${sec("Coucher","23h max",CATS.sleep.text,COUCHER.map(t=>itemH(t,di)).join(""))}
+    ${HEBDO_DAYS.includes(di)?sec("Hebdomadaire (ce jour)","~12 min",CATS.face.text,HEBDO.map(t=>itemH(t,di)).join("")):""}
+    ${sec("Toujours — toute la journée","",CATS.always.text,TOUJOURS.map(t=>itemH(t,di)).join(""))}
   `;
 }
 
-function toggleEx(dayIdx,sk,i){
-  toggle(dayIdx,`ex_${sk}_${i}`);
+function togItemExp(di,id){
+  const k=di+"_"+id;togExp(k);
+  const el=document.getElementById(`I_${di}_${id}`);
+  if(el)el.classList.toggle("expanded",isExp(k));
+}
+function togExExp(di,sk,i){
+  const k=`ex_${di}_${sk}_${i}`;togExp(k);
+  const el=document.getElementById(`EX_${di}_${sk}_${i}`);
+  if(el)el.classList.toggle("expanded",isExp(k));
+}
+function togSport(di){
+  const k="sp_"+di;togExp(k);
+  renderDay(di);
 }
 
-function toggleSport(dayIdx){
-  const key=`sport_open_${dayIdx}`;
-  window[key]=!window[key];
-  renderDay(dayIdx);
-}
-
-// ─── TAB BAR ──────────────────────────────────────────────────────────────
 let activeDay=todayIdx();
 
-function renderTabBar(){
-  const tabs=document.getElementById("tabs");
-  tabs.innerHTML=DAYS_SHORT.map((name,i)=>{
-    const {pct}=dayProgress(i);
-    const isToday=i===todayIdx();
-    return `<div class="tab${i===activeDay?" active":""}${isToday?" today":""}" onclick="switchDay(${i})">
-      <span class="tab-name">${name}${isToday?'<span style="color:#4aff9f;margin-left:2px">·</span>':""}</span>
+function renderTabs(){
+  document.getElementById("tabs").innerHTML=DAYS_SHORT.map((n,i)=>{
+    const{pct}=dayProg(i);
+    const isT=i===todayIdx();
+    return `<div class="tab${i===activeDay?" active":""}${isT?" today":""}" onclick="switchDay(${i})">
+      <span class="tab-name">${n}${isT?'<span style="color:#4aff9f">·</span>':""}</span>
       <div class="tab-mini-bar"><div class="tab-mini-fill" style="width:${pct}%;background:${pct===100?"#4aff9f":"#4a9eff"}"></div></div>
       <span class="tab-sport">${SPORT_KEYS[i]}</span>
     </div>`;
@@ -373,33 +399,22 @@ function renderTabBar(){
 
 function switchDay(i){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(`page_${i}`).classList.add("active");
-  activeDay=i;
-  renderTabBar();
-  // scroll tab into view
-  const tabEl=document.querySelectorAll(".tab")[i];
-  if(tabEl) tabEl.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
+  document.getElementById(`P_${i}`).classList.add("active");
+  activeDay=i;renderTabs();
+  document.querySelectorAll(".tab")[i]?.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────
 window.onload=function(){
-  // date
   const d=new Date();
-  const months=["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
-  document.getElementById("topbar-date").textContent=
-    DAYS_FR[todayIdx()]+" "+d.getDate()+" "+months[d.getMonth()];
-
-  // build pages
-  const pages=document.getElementById("pages");
+  const mo=["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
+  document.getElementById("topbar-date").textContent=DAYS_FR[todayIdx()]+" "+d.getDate()+" "+mo[d.getMonth()];
+  const pg=document.getElementById("pages");
   for(let i=0;i<7;i++){
     const div=document.createElement("div");
     div.className="page"+(i===activeDay?" active":"");
-    div.id=`page_${i}`;
-    pages.appendChild(div);
-    renderDay(i);
+    div.id=`P_${i}`;pg.appendChild(div);renderDay(i);
   }
-
-  renderTabBar();
+  renderTabs();
 };
 </script>
 </body>
